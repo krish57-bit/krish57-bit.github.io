@@ -29,6 +29,12 @@
     -webkit-font-smoothing: antialiased;
     user-select: none;
   }
+  /* CRITICAL: the `hidden` attribute must always win over component display rules.
+     Without this, .window { display: flex } overrides [hidden] and every window
+     paints on load (visible when the file is served as plain HTML rather than
+     inside a sandbox that already resets [hidden]). */
+  [hidden] { display: none !important; }
+  img { max-width: 100%; }
 
   /* Sonoma-style animated gradient wallpaper */
   #wallpaper {
@@ -1027,8 +1033,9 @@
     </div>
 
     <h2 class="section">Short version</h2>
-    <p>Final-year Electronics &amp; Computer Engineering (ENC) student at Thapar Institute. I build event-driven backends &mdash; Kafka pipelines, FastAPI services, WebSocket dashboards &mdash; and lead our capstone lab where the same problem shows up on both sides of the hardware/software line.</p>
-    <p>My taste in engineering: append-only logs, explicit state machines instead of tangled if-trees, and structured logs so a failure has one place to look. I'm drawn to work that touches real-time data, financial workflows, or industrial monitoring.</p>
+    <p style="font-size:15px; line-height:1.55;"><b>I build backends that don't fall over.</b></p>
+    <p>Final-year Electronics &amp; Computer Engineering student at Thapar Institute, Patiala. In the last twelve months I've shipped <b>Kavach AI</b> (real-time industrial-risk detection — ET AI Hackathon), <b>SBI FlowSense</b> (Kafka-driven banking workflow — Global Fintech Fest), and <b>MATDATA</b> (Google Cloud Run in 48 hours — Google AI Hackathon), plus leading the <b>PARAKH</b> capstone through IIT Ropar's incubation review.</p>
+    <p>Happiest where Kafka topics, WebSocket dashboards, and <i>"why is this event out of order?"</i> meet — real-time systems where correctness matters as much as latency. Currently interviewing for Jan – Jun 2027 backend internships.</p>
 
     <h2 class="section">Recent work</h2>
     <ul style="margin:4px 0 0 18px; padding:0;">
@@ -1453,9 +1460,12 @@
     if (bootUptimeTimer) clearInterval(bootUptimeTimer);
     bootTimers.forEach(id => clearTimeout(id));
     const b = document.getElementById("boot");
-    if (!b) return;
-    b.classList.add("gone");
-    setTimeout(() => b.remove(), 400);
+    if (b) {
+      b.classList.add("gone");
+      setTimeout(() => b.remove(), 400);
+    }
+    // Land the visitor on About Me the moment the boot ends, not on an empty desktop.
+    setTimeout(() => openWindow("about"), 250);
   }
 
   window.addEventListener("keydown", (e) => {
@@ -2223,6 +2233,5 @@
   }
   loadGhActivity();
 
-  // Open About shortly after boot
-  setTimeout(() => openWindow("about"), REDUCED ? 300 : 3000);
+  // About opens automatically inside dismissBoot() the moment the boot ends.
 </script>
