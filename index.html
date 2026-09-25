@@ -1,0 +1,2102 @@
+<title>Krish Kaul — Portfolio</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --font-ui: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif;
+    --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, sans-serif;
+    --font-mono: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+
+    --ink: #1d1d1f;
+    --ink-2: #48484a;
+    --ink-3: #86868b;
+    --glass: rgba(246, 246, 246, 0.72);
+    --glass-strong: rgba(255, 255, 255, 0.85);
+    --glass-bar: rgba(255, 255, 255, 0.35);
+    --hairline: rgba(0, 0, 0, 0.12);
+    --accent: #0a84ff;
+    --accent-hover: #0071e3;
+
+    --tl-red: #ff5f57;
+    --tl-yellow: #febc2e;
+    --tl-green: #28c840;
+  }
+
+  html, body {
+    height: 100%; margin: 0; overflow: hidden;
+    font-family: var(--font-ui);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+  }
+
+  /* Sonoma-style animated gradient wallpaper */
+  #wallpaper {
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(1100px 850px at 18% 22%, rgba(120, 60, 220, 0.85) 0%, transparent 55%),
+      radial-gradient(1000px 800px at 82% 18%, rgba(236, 72, 153, 0.75) 0%, transparent 55%),
+      radial-gradient(900px 700px at 80% 88%, rgba(249, 115, 22, 0.7) 0%, transparent 55%),
+      radial-gradient(700px 550px at 45% 55%, rgba(59, 130, 246, 0.35) 0%, transparent 60%),
+      linear-gradient(180deg, #0f0723 0%, #1a0a3d 60%, #2b1055 100%);
+    background-size: 200% 200%, 200% 200%, 200% 200%, 200% 200%, 100% 100%;
+    animation: drift 40s ease-in-out infinite alternate;
+  }
+  @keyframes drift {
+    0% { background-position: 0% 0%, 100% 0%, 100% 100%, 50% 50%, 0 0; }
+    100% { background-position: 20% 30%, 70% 20%, 80% 60%, 40% 60%, 0 0; }
+  }
+  #wallpaper::after {
+    /* subtle noise for depth */
+    content: "";
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    opacity: .6; mix-blend-mode: overlay; pointer-events: none;
+  }
+
+  /* ---------- Menu Bar ---------- */
+  #menubar {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 26px;
+    background: var(--glass-bar);
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    border-bottom: 0.5px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center;
+    padding: 0 14px;
+    z-index: 1000;
+    color: #fff;
+    font-family: var(--font-ui);
+    font-size: 13px;
+    gap: 16px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+  }
+  #menubar .apple-wrap { display: flex; align-items: center; position: relative; }
+  #menubar .apple {
+    width: 14px; height: 16px;
+    cursor: pointer;
+    display: grid; place-items: center;
+    padding: 0 4px;
+    border-radius: 4px;
+  }
+  #menubar .apple:hover, #menubar .apple-wrap.open .apple { background: rgba(255,255,255,0.25); }
+  #menubar .menu {
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-weight: 600;
+  }
+  #menubar .menu.name { font-weight: 700; }
+  #menubar .menu:hover { background: rgba(255,255,255,0.22); }
+  #menubar .right {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 14px;
+    font-weight: 500;
+  }
+  #menubar .right .ic { display: grid; place-items: center; cursor: pointer; opacity: 0.95; }
+  #menubar .clock { font-variant-numeric: tabular-nums; }
+
+  /* Apple menu dropdown */
+  .dropdown {
+    position: absolute;
+    top: 26px;
+    background: rgba(240,240,240,0.85);
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    border: 0.5px solid rgba(0,0,0,0.2);
+    border-radius: 8px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+    min-width: 220px;
+    padding: 5px;
+    z-index: 2000;
+    font-size: 13px;
+    color: var(--ink);
+    text-shadow: none;
+  }
+  .dropdown .item {
+    padding: 5px 10px;
+    cursor: default;
+    border-radius: 5px;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 12px;
+  }
+  .dropdown .item:hover { background: var(--accent); color: #fff; }
+  .dropdown .item .kb { font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); }
+  .dropdown .item:hover .kb { color: rgba(255,255,255,0.8); }
+  .dropdown .sep { height: 1px; background: rgba(0,0,0,0.12); margin: 5px 4px; }
+  .dropdown .item.disabled { color: var(--ink-3); }
+  .dropdown .item.disabled:hover { background: transparent; color: var(--ink-3); }
+
+  /* ---------- Desktop icons ---------- */
+  #desktop {
+    position: fixed; inset: 26px 0 0 0;
+    padding: 20px 20px 100px 20px;
+  }
+  #icons {
+    position: absolute;
+    top: 12px; right: 12px;
+    display: flex; flex-direction: column;
+    gap: 6px; align-items: center;
+  }
+  .icon {
+    width: 84px;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 6px 4px;
+    cursor: pointer;
+    gap: 4px;
+    border-radius: 8px;
+  }
+  .icon:hover { background: rgba(255,255,255,0.12); }
+  .icon.selected { background: rgba(255,255,255,0.28); backdrop-filter: blur(10px); }
+  .icon .art {
+    width: 52px; height: 52px;
+    display: grid; place-items: center;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+  }
+  .icon .label {
+    font-size: 12px;
+    color: #fff;
+    text-align: center;
+    line-height: 1.15;
+    font-weight: 500;
+    padding: 1px 5px;
+    border-radius: 4px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+    max-width: 84px;
+    word-break: break-word;
+  }
+  .icon.selected .label { background: var(--accent); text-shadow: none; }
+
+  /* ---------- Windows (Aqua-ish) ---------- */
+  .window {
+    position: absolute;
+    background: var(--glass);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 0.5px solid rgba(0,0,0,0.25);
+    border-radius: 12px;
+    box-shadow:
+      0 25px 60px rgba(0,0,0,0.45),
+      0 0 0 0.5px rgba(255,255,255,0.4) inset;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    min-width: 300px;
+    color: var(--ink);
+  }
+  .titlebar {
+    height: 38px;
+    background: rgba(255,255,255,0.55);
+    border-bottom: 0.5px solid rgba(0,0,0,0.12);
+    display: flex; align-items: center;
+    padding: 0 14px;
+    cursor: grab;
+    position: relative;
+    flex: none;
+  }
+  .titlebar.dragging { cursor: grabbing; }
+  .traffic-lights { display: flex; gap: 8px; align-items: center; flex: none; }
+  .tl {
+    width: 12px; height: 12px; border-radius: 50%;
+    border: 0.5px solid rgba(0,0,0,0.15);
+    cursor: pointer; position: relative;
+    display: grid; place-items: center;
+  }
+  .tl svg { opacity: 0; width: 8px; height: 8px; }
+  .traffic-lights:hover .tl svg { opacity: 1; }
+  .tl.red { background: var(--tl-red); }
+  .tl.yellow { background: var(--tl-yellow); }
+  .tl.green { background: var(--tl-green); }
+  .titlebar .title {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    font-size: 13px; font-weight: 600; color: var(--ink);
+    pointer-events: none;
+    max-width: 60%;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .titlebar.inactive { background: rgba(255,255,255,0.35); }
+  .titlebar.inactive .title { color: var(--ink-3); }
+  .titlebar.inactive .tl { background: #d0d0d0; }
+  .window-body {
+    flex: 1;
+    padding: 20px 26px;
+    overflow: auto;
+    background: rgba(255,255,255,0.35);
+    max-height: 68vh;
+  }
+  .window-body::-webkit-scrollbar { width: 10px; }
+  .window-body::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.25); border-radius: 5px; }
+  .window-body::-webkit-scrollbar-track { background: transparent; }
+
+  h1.hero {
+    font-family: var(--font-display);
+    font-size: 28px; font-weight: 700; margin: 0 0 4px;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  h2.section {
+    font-family: var(--font-display);
+    font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--ink-3);
+    margin: 22px 0 8px;
+  }
+  p, li { line-height: 1.55; }
+
+  /* ---------- Dock (compact, social-only) ---------- */
+  #dock {
+    position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%);
+    z-index: 900;
+    display: flex; align-items: center; gap: 4px;
+    padding: 5px 8px;
+    background: rgba(255,255,255,0.22);
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    border: 0.5px solid rgba(255,255,255,0.35);
+    border-radius: 18px;
+    box-shadow: 0 10px 32px rgba(0,0,0,0.35);
+  }
+  .dock-item {
+    position: relative;
+    width: 42px; height: 42px;
+    border-radius: 11px;
+    display: grid; place-items: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.15s ease;
+    background: rgba(255,255,255,0.9);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.18);
+  }
+  .dock-item:hover { transform: translateY(-6px) scale(1.1); }
+  .dock-item[data-tip]::after {
+    content: attr(data-tip);
+    position: absolute; bottom: 56px; left: 50%; transform: translateX(-50%);
+    background: rgba(30,30,30,0.92); color: #fff;
+    padding: 4px 10px; border-radius: 6px;
+    font-size: 11.5px; font-weight: 500; white-space: nowrap;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.15s ease;
+    backdrop-filter: blur(10px);
+  }
+  .dock-item:hover[data-tip]::after { opacity: 1; }
+
+  /* ---------- Content elements ---------- */
+
+  /* About window */
+  .avatar {
+    width: 80px; height: 80px; border-radius: 20px;
+    display: grid; place-items: center;
+    box-shadow: 0 10px 28px rgba(139,92,246,0.45);
+    flex: none;
+    overflow: hidden;
+  }
+  .avatar svg { width: 100%; height: 100%; display: block; }
+  .about-head { display: flex; gap: 18px; align-items: center; }
+  .role-line { color: var(--ink-2); font-size: 14px; margin-top: 4px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .chip {
+    font-size: 11px; padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba(10,132,255,0.12);
+    color: var(--accent-hover);
+    font-weight: 500;
+  }
+  .stats-row {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px; margin-top: 14px;
+  }
+  .stat {
+    background: rgba(255,255,255,0.55);
+    border: 0.5px solid rgba(0,0,0,0.08);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+  }
+  .stat .n {
+    font-family: var(--font-display);
+    font-size: 20px; font-weight: 700;
+    color: var(--ink);
+  }
+  .stat .l {
+    font-size: 11px; color: var(--ink-3);
+    text-transform: uppercase; letter-spacing: 0.05em;
+    margin-top: 2px;
+  }
+
+  /* Projects Finder view */
+  .finder-toolbar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 6px 10px; margin: -8px -10px 12px;
+    background: rgba(255,255,255,0.45);
+    border-bottom: 0.5px solid rgba(0,0,0,0.08);
+    border-radius: 8px;
+  }
+  .finder-toolbar .search {
+    flex: 1;
+    background: rgba(0,0,0,0.06);
+    border: 0.5px solid rgba(0,0,0,0.1);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    color: var(--ink-3);
+  }
+  .proj-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 12px 8px;
+  }
+  .proj-folder {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 4px; padding: 8px 4px;
+    cursor: pointer; border-radius: 8px;
+    text-align: center;
+  }
+  .proj-folder:hover { background: rgba(10,132,255,0.08); }
+  .proj-folder.selected { background: rgba(10,132,255,0.18); }
+  .proj-folder .folder-art { width: 64px; height: 52px; display: grid; place-items: center; }
+  .proj-folder .n {
+    font-size: 12px; font-weight: 500;
+    line-height: 1.2; max-width: 100px;
+    word-break: break-word;
+  }
+
+  .project-detail {
+    background: rgba(255,255,255,0.6);
+    border: 0.5px solid rgba(0,0,0,0.08);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 12px;
+  }
+  .project-detail h3 {
+    margin: 0 0 4px;
+    font-family: var(--font-display);
+    font-size: 16px; font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .project-detail .meta {
+    font-size: 12px; color: var(--ink-3);
+    margin-bottom: 8px;
+  }
+  .project-detail .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+  .project-detail .tag {
+    font-size: 10px; padding: 2px 7px;
+    border-radius: 999px;
+    background: rgba(0,0,0,0.06);
+    color: var(--ink-2); font-weight: 500;
+  }
+  .project-detail a {
+    color: var(--accent-hover); text-decoration: none;
+    font-size: 12px; font-weight: 500;
+  }
+  .project-detail a:hover { text-decoration: underline; }
+
+  /* Skills */
+  .skill-group {
+    background: rgba(255,255,255,0.5);
+    border: 0.5px solid rgba(0,0,0,0.08);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 10px;
+  }
+  .skill-group h3 {
+    font-family: var(--font-display);
+    font-size: 13px; font-weight: 700;
+    margin: 0 0 8px; color: var(--ink);
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .skill-tag {
+    font-size: 12px; padding: 4px 10px;
+    border-radius: 6px;
+    background: #fff;
+    border: 0.5px solid rgba(0,0,0,0.1);
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* Contact form */
+  .form-row { margin-bottom: 14px; }
+  .form-row label {
+    display: block; font-size: 12px; font-weight: 600;
+    color: var(--ink); margin-bottom: 5px;
+  }
+  .form-row input, .form-row textarea {
+    width: 100%; box-sizing: border-box;
+    font-family: var(--font-ui); font-size: 13px;
+    color: var(--ink);
+    background: rgba(255,255,255,0.85);
+    border: 0.5px solid rgba(0,0,0,0.2);
+    border-radius: 8px;
+    padding: 8px 12px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .form-row input:focus, .form-row textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(10,132,255,0.25);
+  }
+  .form-row textarea { min-height: 100px; resize: vertical; }
+  .form-actions { display: flex; justify-content: flex-end; gap: 8px; }
+  .btn {
+    font-family: var(--font-ui);
+    font-size: 13px; font-weight: 500;
+    padding: 7px 16px;
+    border-radius: 8px;
+    border: 0.5px solid rgba(0,0,0,0.15);
+    background: #fff; color: var(--ink);
+    cursor: pointer;
+    transition: transform 0.05s;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn.primary {
+    background: linear-gradient(180deg, #0a95ff 0%, #0a7aff 100%);
+    color: #fff; border-color: rgba(0,0,0,0.2);
+    box-shadow: 0 1px 3px rgba(10,132,255,0.4);
+  }
+  .btn.primary:hover { background: linear-gradient(180deg, #1c9dff 0%, #0068e0 100%); }
+
+  .contact-quick {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 8px; margin-bottom: 16px;
+  }
+  .contact-quick a {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,0.7);
+    border: 0.5px solid rgba(0,0,0,0.08);
+    border-radius: 10px;
+    text-decoration: none; color: var(--ink);
+    font-size: 12px; font-weight: 500;
+    transition: transform 0.15s, background 0.15s;
+  }
+  .contact-quick a:hover { transform: translateY(-2px); background: #fff; }
+  .contact-quick a .ic { width: 22px; height: 22px; display: grid; place-items: center; }
+  .contact-quick a .n { display: block; font-size: 11px; color: var(--ink-3); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+  .contact-quick a .v { display: block; font-size: 13px; color: var(--ink); font-weight: 600; }
+
+  /* Resume */
+  .resume-body { font-size: 13px; line-height: 1.6; }
+  .resume-body .role {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-top: 12px; gap: 12px;
+  }
+  .resume-body .role h3 {
+    font-family: var(--font-display);
+    font-size: 14px; margin: 0; font-weight: 700;
+  }
+  .resume-body .role .when {
+    font-size: 12px; color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+    flex: none;
+  }
+  .resume-body ul { margin: 4px 0 10px 20px; padding: 0; }
+  .resume-body li { margin: 3px 0; color: var(--ink-2); }
+  .resume-body .head-links { font-size: 12px; color: var(--ink-3); margin: 4px 0 12px; }
+  .resume-body .head-links a { color: var(--accent-hover); text-decoration: none; margin-right: 10px; }
+  .resume-body .head-links a:hover { text-decoration: underline; }
+
+  /* ---------- Boot screen (systemd-style boot log) ---------- */
+  #boot {
+    position: fixed; inset: 0;
+    background: #0a0a0d;
+    z-index: 5000;
+    color: #e4e4e7;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.55;
+    padding: 24px 32px;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  #boot::before {
+    /* subtle scanline noise */
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0 1px, transparent 1px 3px);
+    pointer-events: none;
+  }
+  #boot .boot-head {
+    display: flex; align-items: center; gap: 14px;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    flex: none;
+  }
+  #boot .boot-head .mark {
+    width: 34px; height: 34px;
+    filter: drop-shadow(0 4px 14px rgba(120,60,220,0.5));
+  }
+  #boot .boot-head .mark svg { width: 100%; height: 100%; display: block; }
+  #boot .boot-head .strip {
+    display: flex; gap: 22px; flex-wrap: wrap;
+    color: #a1a1aa;
+    font-size: 12px;
+  }
+  #boot .boot-head .strip b { color: #e4e4e7; font-weight: 500; }
+  #boot .boot-log {
+    flex: 1; overflow: hidden;
+    display: flex; flex-direction: column;
+    gap: 2px;
+  }
+  #boot .b-line {
+    display: grid;
+    grid-template-columns: 82px 1fr auto;
+    gap: 12px;
+    align-items: baseline;
+    opacity: 0;
+    animation: bLineIn .18s ease-out forwards;
+  }
+  #boot .b-line .tag {
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-align: center;
+    color: #6ee7b7;
+  }
+  #boot .b-line[data-t="WARN"] .tag { color: #fbbf24; }
+  #boot .b-line[data-t="INFO"] .tag { color: #82b1ff; }
+  #boot .b-line[data-t="RUN"]  .tag { color: #c4b5fd; }
+  #boot .b-line .msg { color: #e4e4e7; }
+  #boot .b-line .msg em { color: #6ee7b7; font-style: normal; }
+  #boot .b-line .msg code { color: #f5c46b; font-family: inherit; }
+  #boot .b-line .ms {
+    color: #71717a; font-variant-numeric: tabular-nums;
+    font-size: 12px;
+  }
+  #boot .b-line.ready .tag { color: #6ee7b7; }
+  #boot .b-line.ready .msg { color: #fff; font-weight: 600; }
+  #boot .b-cursor {
+    display: inline-block;
+    width: 7px; height: 13px;
+    background: #e4e4e7;
+    vertical-align: -1px;
+    margin-left: 2px;
+    animation: blink 1s steps(2, start) infinite;
+  }
+  @keyframes bLineIn {
+    from { opacity: 0; transform: translateY(2px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  #boot .boot-foot {
+    padding-top: 10px;
+    margin-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    color: #71717a;
+    font-size: 11px;
+    display: flex; justify-content: space-between;
+    letter-spacing: 0.06em;
+    flex: none;
+  }
+  #boot.gone { opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+
+  /* Reusable logo mark */
+  .kk-logo { display: block; }
+  .kk-logo .k-stroke { stroke: #fff; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+
+  @media (max-width: 640px) {
+    #boot { padding: 16px 14px; font-size: 11.5px; }
+    #boot .boot-head .strip { font-size: 11px; gap: 12px; }
+    #boot .b-line { grid-template-columns: 62px 1fr auto; gap: 8px; }
+    #boot .b-line .ms { font-size: 10.5px; }
+    #boot .boot-head .mark { width: 28px; height: 28px; }
+  }
+  #boot .prog {
+    width: 220px; height: 4px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  #boot .prog::before {
+    content: ""; display: block; height: 100%; width: 100%;
+    background: rgba(255,255,255,0.9);
+    animation: bootbar 2.6s ease-out forwards;
+    transform-origin: left;
+  }
+  @keyframes bootbar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  #boot.gone { opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+  #boot .skip {
+    position: absolute; bottom: 24px;
+    font-size: 11px; color: rgba(255,255,255,0.4);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    font-family: var(--font-ui);
+  }
+
+  /* Toast */
+  #toast {
+    position: fixed; top: 40px; left: 50%; transform: translateX(-50%) translateY(-8px);
+    background: rgba(30,30,30,0.92);
+    color: #fff; padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 13px; z-index: 3000;
+    opacity: 0; transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+    backdrop-filter: blur(20px);
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ---------- Terminal Skills window ---------- */
+  .window.terminal {
+    background: rgba(20, 20, 24, 0.78);
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    border: 0.5px solid rgba(255,255,255,0.15);
+    color: #eaeaea;
+  }
+  .window.terminal .titlebar {
+    background: linear-gradient(180deg, rgba(60,60,66,0.85) 0%, rgba(42,42,48,0.85) 100%);
+    border-bottom: 0.5px solid rgba(0,0,0,0.4);
+  }
+  .window.terminal .titlebar .title { color: #d0d0d3; font-weight: 500; }
+  .window.terminal .titlebar.inactive .title { color: #7a7a7f; }
+  .window.terminal .window-body {
+    background: rgba(20, 20, 24, 0.4);
+    padding: 14px 18px 20px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.55;
+    color: #e8e8ea;
+  }
+  .window.terminal .window-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
+  .term {
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .term .prompt-user { color: #6ee7b7; }
+  .term .prompt-at { color: #a0a0a5; }
+  .term .prompt-host { color: #82b1ff; }
+  .term .prompt-path { color: #f5c46b; }
+  .term .prompt-caret { color: #7a7a83; margin: 0 6px 0 4px; }
+  .term .cmd { color: #ffffff; }
+  .term .comment { color: #7a7a83; font-style: italic; }
+  .term .k { color: #82b1ff; }         /* keys */
+  .term .v { color: #eaeaea; }         /* values */
+  .term .b { color: #6ee7b7; }         /* bar filled */
+  .term .d { color: #3f3f46; }         /* bar dim */
+  .term .h { color: #f5c46b; font-weight: 600; }  /* heading */
+  .term .u { color: #c4b5fd; }         /* url / accent */
+  .term .ok { color: #6ee7b7; }
+  .term .warn { color: #f5c46b; }
+  .term .err { color: #ff7ab6; }
+  .term-line { display: block; }
+  .term-cursor {
+    display: inline-block;
+    width: 8px; height: 14px;
+    background: #eaeaea;
+    vertical-align: text-bottom;
+    animation: blink 1s steps(2, start) infinite;
+    margin-left: 2px;
+  }
+  @keyframes blink { to { visibility: hidden; } }
+
+  /* Real interactive input inside the terminal */
+  .term-input-wrap { display: flex; align-items: center; }
+  .term-input-wrap .prompt-inline { white-space: nowrap; }
+  .term-input {
+    flex: 1;
+    background: transparent;
+    color: #fff;
+    border: none;
+    outline: none;
+    font: inherit;
+    padding: 0 0 0 4px;
+    margin: 0;
+    caret-color: #eaeaea;
+    caret-shape: block;
+  }
+  .term-input::selection { background: rgba(130,177,255,0.35); }
+
+  /* Spotlight */
+  #spotlight {
+    position: fixed; top: 14vh; left: 50%; transform: translateX(-50%);
+    width: min(560px, calc(100vw - 32px));
+    background: rgba(30, 30, 34, 0.75);
+    backdrop-filter: blur(50px) saturate(180%);
+    -webkit-backdrop-filter: blur(50px) saturate(180%);
+    border: 0.5px solid rgba(255,255,255,0.15);
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    z-index: 4000;
+    overflow: hidden;
+    color: #f5f5f7;
+  }
+  #spotlight[hidden] { display: none; }
+  #spotlight .sp-search {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 18px;
+    border-bottom: 0.5px solid rgba(255,255,255,0.08);
+  }
+  #spotlight .sp-search svg { flex: none; opacity: 0.7; }
+  #spotlight input {
+    flex: 1;
+    background: transparent; border: none; outline: none;
+    color: #f5f5f7;
+    font: 20px/1.2 var(--font-ui);
+    caret-color: #82b1ff;
+  }
+  #spotlight input::placeholder { color: rgba(255,255,255,0.4); }
+  #spotlight .sp-results {
+    max-height: 44vh;
+    overflow: auto;
+    padding: 6px 0;
+  }
+  #spotlight .sp-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 9px 18px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  #spotlight .sp-item .kind {
+    margin-left: auto;
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  #spotlight .sp-item.active { background: rgba(130,177,255,0.22); }
+  #spotlight .sp-item .glyph {
+    width: 22px; height: 22px; display: grid; place-items: center;
+    background: rgba(255,255,255,0.08); border-radius: 6px;
+    font-size: 12px; color: rgba(255,255,255,0.9);
+  }
+  #spotlight .sp-empty { padding: 18px; color: rgba(255,255,255,0.5); text-align: center; font-size: 13px; }
+  #spotlight .sp-hint {
+    display: flex; justify-content: flex-end; gap: 14px;
+    padding: 8px 18px 10px;
+    border-top: 0.5px solid rgba(255,255,255,0.06);
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+  }
+  #spotlight kbd {
+    font-family: var(--font-mono);
+    background: rgba(255,255,255,0.08);
+    border: 0.5px solid rgba(255,255,255,0.15);
+    padding: 1px 5px; border-radius: 4px;
+    font-size: 10.5px; margin-right: 4px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  /* Spotlight trigger in menu bar */
+  #menubar .ic.spotlight { cursor: pointer; padding: 0 2px; }
+  #menubar .ic.spotlight:hover { opacity: 0.7; }
+
+  /* Reduced motion — respect the setting */
+  @media (prefers-reduced-motion: reduce) {
+    #wallpaper { animation: none !important; }
+    #boot .prog::before { animation: none !important; transform: scaleX(1); }
+    .term-cursor { animation: none !important; }
+    .dock-item { transition: none !important; }
+    .dock-item:hover { transform: none !important; }
+  }
+
+  @media (max-width: 640px) {
+    .window { min-width: 260px; max-width: calc(100vw - 24px); }
+    .contact-quick { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    #icons { top: 6px; right: 6px; }
+    .icon { width: 74px; }
+    .dock-item { width: 46px; height: 46px; }
+    #dock { padding: 6px 8px; }
+    .window.terminal .window-body { font-size: 11.5px; padding: 12px; }
+  }
+</style>
+
+<div id="wallpaper"></div>
+
+<!-- ============ BOOT SCREEN (systemd-style) ============ -->
+<div id="boot" onclick="dismissBoot()">
+  <div class="boot-head">
+    <div class="mark">
+      <svg class="kk-logo" viewBox="0 0 108 108" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="4" width="100" height="100" rx="26" fill="url(#logog)"/>
+        <path class="k-stroke" d="M 38 26 L 38 82" stroke-width="8"/>
+        <path class="k-stroke" d="M 38 54 L 72 26" stroke-width="8"/>
+        <path class="k-stroke" d="M 46 54 L 76 82" stroke-width="8"/>
+        <circle cx="83" cy="82" r="5.5" fill="#febc2e"/>
+      </svg>
+    </div>
+    <div class="strip">
+      <span><b>krishOS</b> v1.0 (Sonoma)</span>
+      <span>kernel: <b>24.1.0-arm64</b></span>
+      <span>uptime: <b id="boot-uptime">0.00s</b></span>
+    </div>
+  </div>
+  <div class="boot-log" id="boot-log"></div>
+  <div class="boot-foot">
+    <span>tty1 · press any key to skip</span>
+    <span id="boot-status">booting…</span>
+  </div>
+</div>
+
+<!-- ============ MENU BAR ============ -->
+<div id="menubar">
+  <div class="apple-wrap" id="apple-wrap">
+    <div class="menu name" onclick="toggleAppleMenu(event)" title="Portfolio menu">Krish Kaul</div>
+  </div>
+  <div class="menu" onclick="openWindow('about')">About</div>
+  <div class="menu" onclick="openWindow('projects')">Projects</div>
+  <div class="menu" onclick="openWindow('skills')">Skills</div>
+  <div class="menu" onclick="openWindow('resume')">Resume</div>
+  <div class="menu" onclick="openWindow('contact')">Contact</div>
+  <div class="right">
+    <span class="ic" title="Battery">
+      <svg width="24" height="14" viewBox="0 0 24 14" fill="none"><rect x="0.5" y="0.5" width="20" height="13" rx="2.5" stroke="#fff"/><rect x="2" y="2" width="17" height="10" rx="1.5" fill="#fff"/><rect x="21" y="4" width="2" height="6" rx="1" fill="#fff"/></svg>
+    </span>
+    <span class="ic" title="Wi-Fi">
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="#fff"><path d="M8 12c.8 0 1.4-.6 1.4-1.4S8.8 9.2 8 9.2s-1.4.6-1.4 1.4S7.2 12 8 12zM5.2 8.4c1.5-1.5 4-1.5 5.6 0l.9-.9c-2-2-5.4-2-7.4 0l.9.9zM2.5 5.6C5.5 2.6 10.5 2.6 13.5 5.6l.9-.9C10.9 1.2 5.1 1.2 1.6 4.7l.9.9z"/></svg>
+    </span>
+    <span class="ic spotlight" title="Spotlight (⌘K)" onclick="openSpotlight()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#fff" stroke-width="1.5"/><line x1="11" y1="11" x2="14.5" y2="14.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </span>
+    <span class="ic" title="Control Center">
+      <svg width="16" height="10" viewBox="0 0 16 10" fill="#fff"><rect x="0" y="0" width="16" height="4" rx="2"/><rect x="0" y="6" width="16" height="4" rx="2"/></svg>
+    </span>
+    <span class="clock" id="clock">--:--</span>
+  </div>
+</div>
+
+<!-- ============ SPOTLIGHT ============ -->
+<div id="spotlight" hidden>
+  <div class="sp-search">
+    <svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#fff" stroke-width="1.5"/><line x1="11" y1="11" x2="14.5" y2="14.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <input id="sp-input" type="text" placeholder="Search projects, sections, links…" autocomplete="off" spellcheck="false">
+  </div>
+  <div class="sp-results" id="sp-results"></div>
+  <div class="sp-hint">
+    <span><kbd>↑↓</kbd>navigate</span>
+    <span><kbd>↵</kbd>open</span>
+    <span><kbd>esc</kbd>close</span>
+  </div>
+</div>
+
+<!-- ============ DESKTOP + ICONS ============ -->
+<div id="desktop">
+  <div id="icons">
+    <div class="icon" data-window="about" ondblclick="openWindow('about')" onclick="selectIcon(this)">
+      <div class="art">
+        <!-- Portrait card -->
+        <svg viewBox="0 0 52 52" width="52" height="52">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#0a84ff"/><stop offset="1" stop-color="#b845ff"/>
+            </linearGradient>
+          </defs>
+          <rect x="2" y="2" width="48" height="48" rx="10" fill="url(#g1)"/>
+          <circle cx="26" cy="20" r="7" fill="#fff"/>
+          <path d="M12 44 Q26 30 40 44 Z" fill="#fff"/>
+        </svg>
+      </div>
+      <div class="label">About Me</div>
+    </div>
+
+    <div class="icon" data-window="projects" ondblclick="openWindow('projects')" onclick="selectIcon(this)">
+      <div class="art">
+        <!-- macOS folder -->
+        <svg viewBox="0 0 52 44" width="52" height="44">
+          <defs>
+            <linearGradient id="fg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#8ec9f7"/><stop offset="1" stop-color="#4b95d5"/>
+            </linearGradient>
+            <linearGradient id="fg2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#a8d5f9"/><stop offset="1" stop-color="#5fa9df"/>
+            </linearGradient>
+          </defs>
+          <path d="M4 12 Q4 8 8 8 H18 L22 12 H44 Q48 12 48 16 V36 Q48 40 44 40 H8 Q4 40 4 36 Z" fill="url(#fg)"/>
+          <path d="M4 16 Q4 12 8 12 H44 Q48 12 48 16 V36 Q48 40 44 40 H8 Q4 40 4 36 Z" fill="url(#fg2)"/>
+        </svg>
+      </div>
+      <div class="label">Projects</div>
+    </div>
+
+    <div class="icon" data-window="skills" ondblclick="openWindow('skills')" onclick="selectIcon(this)">
+      <div class="art">
+        <!-- Xcode-like hammer -->
+        <svg viewBox="0 0 52 52" width="52" height="52">
+          <defs>
+            <linearGradient id="sg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#3ec6ff"/><stop offset="1" stop-color="#0057c7"/>
+            </linearGradient>
+          </defs>
+          <rect x="2" y="2" width="48" height="48" rx="10" fill="url(#sg)"/>
+          <rect x="16" y="10" width="6" height="34" rx="2" fill="#fff" transform="rotate(-35 26 26)"/>
+          <rect x="30" y="10" width="14" height="10" rx="2" fill="#fff" transform="rotate(-35 26 26)"/>
+        </svg>
+      </div>
+      <div class="label">Skills</div>
+    </div>
+
+    <div class="icon" data-window="resume" ondblclick="openWindow('resume')" onclick="selectIcon(this)">
+      <div class="art">
+        <!-- Document -->
+        <svg viewBox="0 0 42 52" width="42" height="52">
+          <path d="M3 3 H28 L39 14 V49 H3 Z" fill="#fff" stroke="#c0c0c0" stroke-width="0.5"/>
+          <path d="M28 3 V14 H39" fill="#eaeaea" stroke="#c0c0c0" stroke-width="0.5"/>
+          <line x1="8" y1="22" x2="34" y2="22" stroke="#c0c0c0"/>
+          <line x1="8" y1="27" x2="34" y2="27" stroke="#c0c0c0"/>
+          <line x1="8" y1="32" x2="28" y2="32" stroke="#c0c0c0"/>
+          <line x1="8" y1="37" x2="34" y2="37" stroke="#c0c0c0"/>
+          <line x1="8" y1="42" x2="24" y2="42" stroke="#c0c0c0"/>
+          <rect x="8" y="16" width="12" height="3" rx="1" fill="#0a84ff"/>
+        </svg>
+      </div>
+      <div class="label">Resume</div>
+    </div>
+
+    <div class="icon" data-window="contact" ondblclick="openWindow('contact')" onclick="selectIcon(this)">
+      <div class="art">
+        <!-- Mail icon -->
+        <svg viewBox="0 0 52 52" width="52" height="52">
+          <defs>
+            <linearGradient id="mg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#3fc7ff"/><stop offset="1" stop-color="#008cff"/>
+            </linearGradient>
+          </defs>
+          <rect x="2" y="2" width="48" height="48" rx="10" fill="url(#mg)"/>
+          <path d="M8 18 L26 30 L44 18 V38 Q44 42 40 42 H12 Q8 42 8 38 Z" fill="#fff"/>
+          <path d="M8 16 Q8 14 10 14 H42 Q44 14 44 16 L26 30 Z" fill="#fff" opacity="0.85"/>
+        </svg>
+      </div>
+      <div class="label">Contact</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ WINDOWS ============ -->
+
+<!-- About Me -->
+<div class="window" id="win-about" hidden style="width: 500px; left: calc(50% - 250px); top: 80px;">
+  <div class="titlebar" onmousedown="startDrag(event, 'win-about')" ontouchstart="startDrag(event, 'win-about')">
+    <div class="traffic-lights">
+      <div class="tl red" onclick="closeWindow('win-about')" title="Close">
+        <svg viewBox="0 0 8 8"><path d="M1 1 L7 7 M7 1 L1 7" stroke="#4d0000" stroke-width="1.2"/></svg>
+      </div>
+      <div class="tl yellow"><svg viewBox="0 0 8 8"><line x1="1.5" y1="4" x2="6.5" y2="4" stroke="#7a4d00" stroke-width="1.2"/></svg></div>
+      <div class="tl green"><svg viewBox="0 0 8 8"><line x1="4" y1="1.5" x2="4" y2="6.5" stroke="#004d00" stroke-width="1.2"/><line x1="1.5" y1="4" x2="6.5" y2="4" stroke="#004d00" stroke-width="1.2"/></svg></div>
+    </div>
+    <div class="title">About Me</div>
+  </div>
+  <div class="window-body">
+    <div class="about-head">
+      <div class="avatar">
+        <svg class="kk-logo" viewBox="0 0 108 108" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="4" width="100" height="100" rx="26" fill="url(#logog)"/>
+          <path class="k-stroke" d="M 38 26 L 38 82" stroke-width="8"/>
+          <path class="k-stroke" d="M 38 54 L 72 26" stroke-width="8"/>
+          <path class="k-stroke" d="M 46 54 L 76 82" stroke-width="8"/>
+          <circle cx="83" cy="82" r="5.5" fill="#febc2e"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="hero">Krish Kaul</h1>
+        <div class="role-line">Undergrad backend engineer · Thapar '27 · Patiala, India</div>
+        <div class="chips">
+          <span class="chip">B.E. ENC · CGPA 8.14</span>
+          <span class="chip">Open to Jan – Jun 2027 internships</span>
+          <span class="chip">Backend · Real-time · Data</span>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section">Short version</h2>
+    <p>Final-year Electronics &amp; Computer Engineering (ENC) student at Thapar Institute. I build event-driven backends &mdash; Kafka pipelines, FastAPI services, WebSocket dashboards &mdash; and lead our capstone lab where the same problem shows up on both sides of the hardware/software line.</p>
+    <p>My taste in engineering: append-only logs, explicit state machines instead of tangled if-trees, and structured logs so a failure has one place to look. I'm drawn to work that touches real-time data, financial workflows, or industrial monitoring.</p>
+
+    <h2 class="section">Recent work</h2>
+    <ul style="margin:4px 0 0 18px; padding:0;">
+      <li><b>Kavach AI</b> — real-time risk platform for industrial plants; 17 sensors × 8 zones over WebSocket, combination-rule engine, seven-state approval machine. <span style="color:var(--ink-3);">ET AI Hackathon 2026.</span></li>
+      <li><b>SBI FlowSense</b> — event-driven banking workflow: Kafka services for ingest / processing / execution, seven-collection Mongo model, append-only audit trail. <span style="color:var(--ink-3);">SBI Hackathon @ Global Fintech Fest 2026.</span></li>
+      <li><b>MATDATA</b> — matrimonial-data assistant, shipped end-to-end to Google Cloud Run in the 48-hour hackathon window. <span style="color:var(--ink-3);">Google AI Hackathon.</span></li>
+      <li><b>Wanderlust</b> — full-stack travel platform: schema, REST routes, session auth, server-side ownership checks on every write.</li>
+    </ul>
+
+    <h2 class="section">Research &amp; leadership</h2>
+    <ul style="margin:4px 0 0 18px; padding:0;">
+      <li><b>Team lead, PARAKH capstone</b> (Apr 2025 – present) — four-person faculty-supervised team at TIET. I wrote the C/C++ microcontroller firmware and the Python that processes the readings; selected for incubation review at <b>IIT Ropar</b>.</li>
+      <li><b>DriveSafeAI</b> (Summer 2025) — faculty-supervised research at TIET. Python ingest service validating a high-volume stream against defined rules; REST APIs with structured logging so faults trace to their origin.</li>
+      <li><b>Convener, Literary &amp; Theatre Society, TIET</b> — led a 30+ member team; ran logistics and stakeholder communication across a full semester of events.</li>
+    </ul>
+
+    <h2 class="section">Recognitions</h2>
+    <ul style="margin:4px 0 0 18px; padding:0;">
+      <li><b>Purplle Tech Challenge 2026</b> — shipped a working service inside the 48-hour window, meeting every published evaluation criterion.</li>
+      <li><b>Ericsson Edge Academia</b> — selected in the top 700 across Asia.</li>
+      <li><b>American Express Campus Challenge</b> — advanced to Round 2, engineering track.</li>
+      <li><b>GirlScript Summer of Code 2024</b> — merged features and fixes across open-source repos through maintainer review.</li>
+      <li><b>Certifications:</b> AWS Academy Cloud Foundations · Deloitte Australia Data Analytics Job Simulation.</li>
+    </ul>
+
+    <div class="stats-row">
+      <div class="stat"><div class="n">5+</div><div class="l">Shipped projects</div></div>
+      <div class="stat"><div class="n">4</div><div class="l">Hackathons</div></div>
+      <div class="stat"><div class="n">8.14</div><div class="l">CGPA / 10</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Projects (Finder-like) -->
+<div class="window" id="win-projects" hidden style="width: 640px; left: calc(50% - 320px); top: 90px;">
+  <div class="titlebar" onmousedown="startDrag(event, 'win-projects')" ontouchstart="startDrag(event, 'win-projects')">
+    <div class="traffic-lights">
+      <div class="tl red" onclick="closeWindow('win-projects')"><svg viewBox="0 0 8 8"><path d="M1 1 L7 7 M7 1 L1 7" stroke="#4d0000" stroke-width="1.2"/></svg></div>
+      <div class="tl yellow"><svg viewBox="0 0 8 8"><line x1="1.5" y1="4" x2="6.5" y2="4" stroke="#7a4d00" stroke-width="1.2"/></svg></div>
+      <div class="tl green"><svg viewBox="0 0 8 8"><line x1="4" y1="1.5" x2="4" y2="6.5" stroke="#004d00" stroke-width="1.2"/><line x1="1.5" y1="4" x2="6.5" y2="4" stroke="#004d00" stroke-width="1.2"/></svg></div>
+    </div>
+    <div class="title">Projects</div>
+  </div>
+  <div class="window-body">
+    <div class="finder-toolbar">
+      <div class="search"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="vertical-align:-2px;margin-right:6px;"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/><line x1="11" y1="11" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Search projects</div>
+      <span style="font-size:11px; color:var(--ink-3);">5 items</span>
+    </div>
+
+    <div class="proj-grid" id="proj-grid"></div>
+
+    <div id="project-detail" class="project-detail" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- Skills — Terminal -->
+<div class="window terminal" id="win-skills" hidden style="width: 620px; left: calc(50% - 310px); top: 90px;">
+  <div class="titlebar" onmousedown="startDrag(event, 'win-skills')" ontouchstart="startDrag(event, 'win-skills')">
+    <div class="traffic-lights">
+      <div class="tl red" onclick="closeWindow('win-skills')"><svg viewBox="0 0 8 8"><path d="M1 1 L7 7 M7 1 L1 7" stroke="#4d0000" stroke-width="1.2"/></svg></div>
+      <div class="tl yellow"><svg viewBox="0 0 8 8"><line x1="1.5" y1="4" x2="6.5" y2="4" stroke="#7a4d00" stroke-width="1.2"/></svg></div>
+      <div class="tl green"><svg viewBox="0 0 8 8"><line x1="4" y1="1.5" x2="4" y2="6.5" stroke="#004d00" stroke-width="1.2"/><line x1="1.5" y1="4" x2="6.5" y2="4" stroke="#004d00" stroke-width="1.2"/></svg></div>
+    </div>
+    <div class="title">krish — -zsh — 96×32</div>
+  </div>
+  <div class="window-body">
+    <div class="term" id="term-skills"></div>
+  </div>
+</div>
+
+<!-- Contact (with form) -->
+<div class="window" id="win-contact" hidden style="width: 480px; left: calc(50% - 240px); top: 100px;">
+  <div class="titlebar" onmousedown="startDrag(event, 'win-contact')" ontouchstart="startDrag(event, 'win-contact')">
+    <div class="traffic-lights">
+      <div class="tl red" onclick="closeWindow('win-contact')"><svg viewBox="0 0 8 8"><path d="M1 1 L7 7 M7 1 L1 7" stroke="#4d0000" stroke-width="1.2"/></svg></div>
+      <div class="tl yellow"><svg viewBox="0 0 8 8"><line x1="1.5" y1="4" x2="6.5" y2="4" stroke="#7a4d00" stroke-width="1.2"/></svg></div>
+      <div class="tl green"><svg viewBox="0 0 8 8"><line x1="4" y1="1.5" x2="4" y2="6.5" stroke="#004d00" stroke-width="1.2"/><line x1="1.5" y1="4" x2="6.5" y2="4" stroke="#004d00" stroke-width="1.2"/></svg></div>
+    </div>
+    <div class="title">Contact</div>
+  </div>
+  <div class="window-body">
+    <h1 class="hero" style="font-size:22px;">Get in touch</h1>
+    <p style="color:var(--ink-2); margin:2px 0 14px;">Email or any of the links below — whichever's easier.</p>
+
+    <div class="contact-quick">
+      <a href="https://github.com/krish57-bit" target="_blank" rel="noopener">
+        <span class="ic">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="#1d1d1f"><path d="M10 0C4.5 0 0 4.6 0 10.3c0 4.5 2.9 8.4 6.8 9.7.5.1.7-.2.7-.5v-1.8c-2.8.6-3.4-1.2-3.4-1.2-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1.1 1.5 1.1.9 1.5 2.3 1.1 2.9.8.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5.1 0-1.1.4-2.1 1.1-2.8-.1-.3-.5-1.4.1-2.8 0 0 .9-.3 2.8 1.1.8-.2 1.7-.3 2.5-.3s1.7.1 2.5.3c1.9-1.3 2.8-1.1 2.8-1.1.6 1.4.2 2.5.1 2.8.7.8 1.1 1.7 1.1 2.8 0 4-2.4 4.8-4.6 5.1.4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5C17.1 18.7 20 14.8 20 10.3 20 4.6 15.5 0 10 0z"/></svg>
+        </span>
+        <span><span class="n">GitHub</span><span class="v">krish57-bit</span></span>
+      </a>
+      <a href="https://www.linkedin.com/in/krish-kaul-0b6bb3233/" target="_blank" rel="noopener">
+        <span class="ic">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="#0a66c2"><path d="M17 0H3C1.3 0 0 1.3 0 3v14c0 1.7 1.3 3 3 3h14c1.7 0 3-1.3 3-3V3c0-1.7-1.3-3-3-3zM6 17H3V7h3v10zM4.5 5.5C3.5 5.5 2.7 4.7 2.7 3.8 2.7 2.8 3.5 2 4.5 2s1.8.8 1.8 1.8-.8 1.7-1.8 1.7zM17 17h-3v-5.5c0-1.3-.5-2.2-1.7-2.2-.9 0-1.5.6-1.7 1.2-.1.2-.1.5-.1.8V17H7.5V7h3v1.4c.4-.6 1.2-1.5 3-1.5 2.2 0 3.8 1.4 3.8 4.5V17z"/></svg>
+        </span>
+        <span><span class="n">LinkedIn</span><span class="v">krish-kaul</span></span>
+      </a>
+      <a href="https://leetcode.com/u/krish_231/" target="_blank" rel="noopener">
+        <span class="ic">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="#ff9b16"><path d="M13.5 1.7L11.2 4l-6 6c-.9.9-.9 2.5 0 3.4l3.9 3.9c.9.9 2.5.9 3.4 0l2.3-2.3-1.4-1.4-2.3 2.3-3.9-3.9L13.5 4l1.4 1.4L13.5 1.7zM17 8.5h-4l-2 2 2 2h4c.5 0 1-.5 1-1v-2c0-.5-.5-1-1-1z"/></svg>
+        </span>
+        <span><span class="n">LeetCode</span><span class="v">krish_231</span></span>
+      </a>
+      <a href="mailto:krishkaul57@gmail.com">
+        <span class="ic">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="#0a84ff"><rect x="1" y="4" width="18" height="12" rx="2"/><path d="M2 5 L10 11 L18 5" stroke="#fff" stroke-width="1.5" fill="none"/></svg>
+        </span>
+        <span><span class="n">Email</span><span class="v">krishkaul57@gmail.com</span></span>
+      </a>
+    </div>
+
+    <h2 class="section" style="margin-top:6px;">Or send a message</h2>
+    <form id="contact-form" onsubmit="sendContact(event)">
+      <div class="form-row">
+        <label for="cf-name">Your name</label>
+        <input id="cf-name" type="text" required placeholder="e.g. Ada Lovelace">
+      </div>
+      <div class="form-row">
+        <label for="cf-email">Your email</label>
+        <input id="cf-email" type="email" required placeholder="you@example.com">
+      </div>
+      <div class="form-row">
+        <label for="cf-subject">Subject</label>
+        <input id="cf-subject" type="text" required placeholder="What is this about?">
+      </div>
+      <div class="form-row">
+        <label for="cf-message">Message</label>
+        <textarea id="cf-message" required placeholder="A pitch, a question, or an intro — go."></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn" onclick="copyMessage()">Copy as text</button>
+        <button type="submit" class="btn primary">Open in Mail</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Resume -->
+<div class="window" id="win-resume" hidden style="width: 640px; left: calc(50% - 320px); top: 70px;">
+  <div class="titlebar" onmousedown="startDrag(event, 'win-resume')" ontouchstart="startDrag(event, 'win-resume')">
+    <div class="traffic-lights">
+      <div class="tl red" onclick="closeWindow('win-resume')"><svg viewBox="0 0 8 8"><path d="M1 1 L7 7 M7 1 L1 7" stroke="#4d0000" stroke-width="1.2"/></svg></div>
+      <div class="tl yellow"><svg viewBox="0 0 8 8"><line x1="1.5" y1="4" x2="6.5" y2="4" stroke="#7a4d00" stroke-width="1.2"/></svg></div>
+      <div class="tl green"><svg viewBox="0 0 8 8"><line x1="4" y1="1.5" x2="4" y2="6.5" stroke="#004d00" stroke-width="1.2"/><line x1="1.5" y1="4" x2="6.5" y2="4" stroke="#004d00" stroke-width="1.2"/></svg></div>
+    </div>
+    <div class="title">Resume.pdf</div>
+  </div>
+  <div class="window-body resume-body">
+    <h1 class="hero">Krish Kaul</h1>
+    <div class="head-links">
+      Patiala, Punjab, India &middot; +91 95017-98019 &middot; krishkaul57@gmail.com<br>
+      <a href="https://github.com/krish57-bit" target="_blank" rel="noopener">github.com/krish57-bit</a>
+      <a href="https://www.linkedin.com/in/krish-kaul-0b6bb3233/" target="_blank" rel="noopener">linkedin.com/in/krish-kaul</a>
+      <a href="https://leetcode.com/u/krish_231/" target="_blank" rel="noopener">leetcode.com/u/krish_231</a>
+    </div>
+
+    <h2 class="section">Education</h2>
+    <div class="role">
+      <h3>Thapar Institute of Engineering and Technology, Patiala</h3>
+      <span class="when">Aug 2023 &ndash; June 2027</span>
+    </div>
+    <p style="margin:2px 0 0;">B.E. in Electronics and Computer Engineering (ENC) &middot; CGPA 8.14 / 10</p>
+    <p style="margin:4px 0 0; color:var(--ink-3); font-size:12px;">Coursework: DSA, DAA, OOP, Databases, Operating Systems, Computer Networks, System Design.</p>
+
+    <h2 class="section">Technical Skills</h2>
+    <p style="margin:2px 0;"><b>Languages:</b> Python, JavaScript, TypeScript, Java, C, C++, SQL, Bash</p>
+    <p style="margin:2px 0;"><b>Backend:</b> FastAPI, Node.js, Express, REST, WebSocket, Apache Kafka, auth &amp; access control</p>
+    <p style="margin:2px 0;"><b>Frontend:</b> React, Next.js, HTML, CSS &middot; <b>Databases:</b> MongoDB, PostgreSQL, MySQL, Redis</p>
+    <p style="margin:2px 0;"><b>Cloud &amp; Tools:</b> Git, GitHub, Docker, Linux, AWS, Google Cloud, CI/CD, Jest, Postman</p>
+
+    <h2 class="section">Selected Projects</h2>
+
+    <div class="role">
+      <h3>Kavach AI &mdash; Real-Time Monitoring Platform</h3>
+      <span class="when">2026</span>
+    </div>
+    <ul>
+      <li>React dashboard displaying 17 continuously updating sensor inputs across 8 zones, refreshed every 1.5s over WebSocket, backed by a FastAPI service.</li>
+      <li>Rule engine evaluating combinations of signals; approval workflow modelled as a seven-state machine rejecting invalid transitions before they reach the DB.</li>
+      <li>LLM assistant restricted to a defined document set, returning a source citation with every answer.</li>
+    </ul>
+
+    <div class="role">
+      <h3>SBI FlowSense &mdash; Event-Driven Banking Platform</h3>
+      <span class="when">2026 &middot; SBI Hackathon, GFF</span>
+    </div>
+    <ul>
+      <li>Ingestion, processing and execution split into independent Kafka-connected containers so each scales or fails alone; Redis caches hot state.</li>
+      <li>MongoDB data model across seven collections, logging every event and decision to an append-only trail so any output is traceable to its input.</li>
+    </ul>
+
+    <div class="role">
+      <h3>PARAKH Capstone Project &mdash; Team Lead</h3>
+      <span class="when">Apr 2025 &ndash; Present</span>
+    </div>
+    <ul>
+      <li>Team of four on a faculty-supervised research project at TIET. Wrote the C/C++ firmware on the microcontrollers and the Python that processes the readings; diagnosed hardware&ndash;software boundary faults by eliminating one layer at a time.</li>
+      <li>Selected for incubation review at IIT Ropar.</li>
+    </ul>
+
+    <div class="role">
+      <h3>Wanderlust &mdash; Full-Stack Travel Platform</h3>
+      <span class="when">2025</span>
+    </div>
+    <ul>
+      <li>End to end: schema, REST routes, session auth, image upload, server-side validation on every write; ownership checks enforced server-side.</li>
+    </ul>
+
+    <div class="role">
+      <h3>VenueSync AI &middot; MATDATA</h3>
+      <span class="when">2025 &ndash; 2026</span>
+    </div>
+    <ul>
+      <li>VenueSync AI (sole developer): Next.js + TypeScript planner, Jest-tested. MATDATA (Google AI Hackathon): built and deployed to Google Cloud Run in 48 hours via an automated pipeline.</li>
+    </ul>
+
+    <h2 class="section">Achievements</h2>
+    <ul>
+      <li>Purplle Tech Challenge 2026 &mdash; delivered a working service within 48 hours, meeting all 16 evaluation criteria.</li>
+      <li>GirlScript Summer of Code 2024 &mdash; merged features and bug fixes through PR review.</li>
+      <li>Ericsson Edge Academia &mdash; top 700 across Asia. American Express Campus Challenge &mdash; Round 2, engineering track.</li>
+      <li>Convener, Literary and Theatre Society, TIET &mdash; led a team of 30+.</li>
+      <li>Certifications: AWS Academy Cloud Foundations; Deloitte Australia Data Analytics Job Simulation.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============ DOCK (social links only) ============ -->
+<div id="dock">
+  <a class="dock-item" data-tip="GitHub · krish57-bit" href="https://github.com/krish57-bit" target="_blank" rel="noopener">
+    <svg width="30" height="30" viewBox="0 0 20 20" fill="#1d1d1f"><path d="M10 0C4.5 0 0 4.6 0 10.3c0 4.5 2.9 8.4 6.8 9.7.5.1.7-.2.7-.5v-1.8c-2.8.6-3.4-1.2-3.4-1.2-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1.1 1.5 1.1.9 1.5 2.3 1.1 2.9.8.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5.1 0-1.1.4-2.1 1.1-2.8-.1-.3-.5-1.4.1-2.8 0 0 .9-.3 2.8 1.1.8-.2 1.7-.3 2.5-.3s1.7.1 2.5.3c1.9-1.3 2.8-1.1 2.8-1.1.6 1.4.2 2.5.1 2.8.7.8 1.1 1.7 1.1 2.8 0 4-2.4 4.8-4.6 5.1.4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5C17.1 18.7 20 14.8 20 10.3 20 4.6 15.5 0 10 0z"/></svg>
+  </a>
+  <a class="dock-item" data-tip="LinkedIn · krish-kaul" href="https://www.linkedin.com/in/krish-kaul-0b6bb3233/" target="_blank" rel="noopener">
+    <svg width="30" height="30" viewBox="0 0 20 20" fill="#0a66c2"><path d="M17 0H3C1.3 0 0 1.3 0 3v14c0 1.7 1.3 3 3 3h14c1.7 0 3-1.3 3-3V3c0-1.7-1.3-3-3-3zM6 17H3V7h3v10zM4.5 5.5C3.5 5.5 2.7 4.7 2.7 3.8 2.7 2.8 3.5 2 4.5 2s1.8.8 1.8 1.8-.8 1.7-1.8 1.7zM17 17h-3v-5.5c0-1.3-.5-2.2-1.7-2.2-.9 0-1.5.6-1.7 1.2-.1.2-.1.5-.1.8V17H7.5V7h3v1.4c.4-.6 1.2-1.5 3-1.5 2.2 0 3.8 1.4 3.8 4.5V17z"/></svg>
+  </a>
+  <a class="dock-item" data-tip="LeetCode · krish_231" href="https://leetcode.com/u/krish_231/" target="_blank" rel="noopener">
+    <svg width="26" height="26" viewBox="0 0 32 32"><path d="M22 3L12 13c-1.5 1.5-1.5 3.9 0 5.4l6.6 6.6c1.5 1.5 3.9 1.5 5.4 0L28 21l-2.3-2.3L22 22.4l-6.6-6.6L25 6.3 22 3z" fill="#ffa116"/><path d="M28 15h-8l-2 2 2 2h8c.6 0 1-.4 1-1v-2c0-.6-.4-1-1-1z" fill="#000"/></svg>
+  </a>
+  <a class="dock-item" data-tip="Email · krishkaul57@gmail.com" href="mailto:krishkaul57@gmail.com">
+    <svg width="28" height="28" viewBox="0 0 32 32" fill="none"><rect x="2" y="6" width="28" height="20" rx="4" fill="#0a84ff"/><path d="M4 9 L16 18 L28 9" stroke="#fff" stroke-width="2" fill="none" stroke-linejoin="round"/></svg>
+  </a>
+</div>
+
+<!-- Reusable SVG defs (referenced by id across other SVGs) -->
+<svg width="0" height="0" style="position:absolute;">
+  <defs>
+    <linearGradient id="logog" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a84ff"/>
+      <stop offset="0.55" stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#ec4899"/>
+    </linearGradient>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a84ff"/><stop offset="1" stop-color="#b845ff"/></linearGradient>
+    <linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3ec6ff"/><stop offset="1" stop-color="#0057c7"/></linearGradient>
+    <linearGradient id="mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3fc7ff"/><stop offset="1" stop-color="#008cff"/></linearGradient>
+    <linearGradient id="fg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8ec9f7"/><stop offset="1" stop-color="#4b95d5"/></linearGradient>
+    <linearGradient id="fg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a8d5f9"/><stop offset="1" stop-color="#5fa9df"/></linearGradient>
+  </defs>
+</svg>
+
+<div id="toast"></div>
+
+<script>
+  // ---------- Projects data ----------
+  const PROJECTS = [
+    {
+      id: "kavach",
+      name: "Kavach AI",
+      subtitle: "Real-Time Monitoring Platform",
+      year: "2026",
+      note: "ET AI Hackathon 2026",
+      body: "Real-time compound risk detection for industrial plants: fuses gas sensors, work permits and worker location into one live risk score. Dashboard shows 17 sensors across 8 zones refreshed every 1.5s over WebSocket. Rule engine evaluates combinations of signals rather than single thresholds; approval workflow modelled as a seven-state machine. LLM assistant returns a source citation with every answer.",
+      tags: ["Python", "FastAPI", "Next.js", "TypeScript", "WebSocket", "Leaflet"],
+      link: "https://github.com/krish57-bit/kavach-ai"
+    },
+    {
+      id: "sbi",
+      name: "SBI FlowSense",
+      subtitle: "Event-Driven Banking Workflow",
+      year: "2026",
+      note: "SBI Hackathon, Global Fintech Fest",
+      body: "Event-driven banking workflow: ingestion, processing and execution as independent Kafka-connected services so each scales or fails on its own, with Redis caching hot state. MongoDB data model across seven collections logs every event and decision to an append-only trail, so any output is traceable back to the input that produced it.",
+      tags: ["Python", "FastAPI", "Kafka", "MongoDB", "Redis", "Docker"],
+      link: "https://github.com/krish57-bit/SBI-FLOWSENSE"
+    },
+    {
+      id: "venuesync",
+      name: "VenueSync AI · MATDATA",
+      subtitle: "Planner + Matrimonial-Data Assistant",
+      year: "2025 – 2026",
+      note: "Google AI Hackathon",
+      body: "VenueSync AI (sole developer): Next.js + TypeScript planner that recommends routes from continuously changing inputs, covered by Jest unit tests. MATDATA (Google AI Hackathon): matrimonial-data assistant built end-to-end and deployed to Google Cloud Run inside the 48-hour hackathon window through an automated build pipeline.",
+      tags: ["Next.js", "TypeScript", "Jest", "Google Cloud Run", "CI/CD"],
+      link: "https://github.com/krish57-bit/venuesync-ai"
+    },
+    {
+      id: "wanderlust",
+      name: "Wanderlust",
+      subtitle: "Full-Stack Travel Platform",
+      year: "2025",
+      note: "Sole developer, end-to-end",
+      body: "Schema design, REST routes, session auth, image upload and server-side validation on every write. Ownership checks enforced on the server so a signed-in user can only modify their own records.",
+      tags: ["Node.js", "Express", "MongoDB", "Cloudinary", "Mapbox"],
+      link: "https://github.com/krish57-bit/Wanderlust"
+    },
+    {
+      id: "drivesafe",
+      name: "DriveSafeAI",
+      subtitle: "Research Project",
+      year: "Summer 2025",
+      note: "Faculty-supervised research, TIET",
+      body: "Python service ingesting a high-volume data stream and validating each record against defined rules, rejecting malformed data before storage. Designed and tested REST APIs with structured logging so faults could be traced back to their origin.",
+      tags: ["Python", "REST", "Data validation", "Research"],
+      link: null
+    }
+  ];
+
+  // Render project folder grid
+  function renderProjects() {
+    const grid = document.getElementById("proj-grid");
+    grid.innerHTML = PROJECTS.map(p => `
+      <div class="proj-folder" data-id="${p.id}" onclick="selectProject('${p.id}')" ondblclick="openProjectLink('${p.id}')">
+        <div class="folder-art">
+          <svg viewBox="0 0 64 52" width="64" height="52">
+            <path d="M4 14 Q4 9 9 9 H22 L26 14 H55 Q60 14 60 19 V44 Q60 49 55 49 H9 Q4 49 4 44 Z" fill="url(#fg)"/>
+            <path d="M4 19 Q4 14 9 14 H55 Q60 14 60 19 V44 Q60 49 55 49 H9 Q4 49 4 44 Z" fill="url(#fg2)"/>
+          </svg>
+        </div>
+        <div class="n">${p.name}</div>
+      </div>
+    `).join("");
+  }
+
+  function selectProject(id) {
+    document.querySelectorAll(".proj-folder").forEach(f => f.classList.toggle("selected", f.dataset.id === id));
+    const p = PROJECTS.find(x => x.id === id);
+    const d = document.getElementById("project-detail");
+    d.style.display = "block";
+    d.innerHTML = `
+      <h3>${p.name}</h3>
+      <div class="meta">${p.subtitle} · ${p.year}${p.note ? " · " + p.note : ""}</div>
+      <p style="margin:0 0 6px;">${p.body}</p>
+      <div class="tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join("")}</div>
+      ${p.link ? `<div style="margin-top:8px;"><a href="${p.link}" target="_blank" rel="noopener">↗ ${p.link.replace("https://","")}</a></div>` : ""}
+    `;
+  }
+  function openProjectLink(id) {
+    const p = PROJECTS.find(x => x.id === id);
+    if (p && p.link) window.open(p.link, "_blank", "noopener");
+  }
+
+  // ---------- Boot (systemd-style streaming log) ----------
+  const BOOT_LOG = [
+    { t: "OK",   msg: `Mounting root filesystem  <code>/</code>`,                   ms: 2,   d: 60 },
+    { t: "OK",   msg: `Started <em>systemd-journald.service</em>`,                  ms: 3,   d: 55 },
+    { t: "OK",   msg: `Reached target <em>Network</em>`,                            ms: 4,   d: 70 },
+    { t: "OK",   msg: `PostgreSQL 16 listening on <code>:5432</code>`,              ms: 12,  d: 80 },
+    { t: "OK",   msg: `Redis 7 listening on <code>:6379</code>`,                    ms: 4,   d: 60 },
+    { t: "OK",   msg: `Kafka broker up  <code>brokers=3</code> <code>topics=7</code>`, ms: 47,  d: 90 },
+    { t: "OK",   msg: `MongoDB replica set <code>rs0</code> primary elected`,       ms: 21,  d: 70 },
+    { t: "RUN",  msg: `Starting <em>krish-api</em> (FastAPI · uvicorn) on <code>:8000</code>`, ms: 18, d: 90 },
+    { t: "OK",   msg: `WebSocket listener attached  <code>path=/live</code>`,       ms: 2,   d: 55 },
+    { t: "OK",   msg: `Next.js frontend hydrated on <code>:3000</code>`,            ms: 62,  d: 100 },
+    { t: "WARN", msg: `LinkedIn scraper rate-limited — retrying with backoff`,      ms: 312, d: 90 },
+    { t: "OK",   msg: `Auth service ready  <code>strategy=session</code>`,          ms: 3,   d: 60 },
+    { t: "INFO", msg: `Loaded <em>5</em> projects · <em>4</em> hackathon wins · <em>1</em> capstone`, ms: 1, d: 70 },
+    { t: "OK",   msg: `Reached target <em>Multi-User</em>`,                         ms: 4,   d: 60 },
+    { t: "OK",   msg: `Rendering desktop compositor`,                               ms: 9,   d: 80 },
+    { t: "OK",   msg: `<em>krish.service</em> is up`,                               ms: 1,   d: 90 }
+  ];
+
+  const bootStart = performance.now();
+  let bootUptimeTimer = null;
+  let bootDismissed = false;
+  const bootTimers = [];
+
+  function updateUptime() {
+    const el = document.getElementById("boot-uptime");
+    if (!el) return;
+    const s = ((performance.now() - bootStart) / 1000).toFixed(2);
+    el.textContent = s + "s";
+  }
+  function appendBoot(t, msg, ms) {
+    const log = document.getElementById("boot-log");
+    if (!log) return;
+    const line = document.createElement("div");
+    line.className = "b-line";
+    line.dataset.t = t;
+    line.innerHTML = `<span class="tag">[ ${t.padEnd(4," ")} ]</span><span class="msg">${msg}</span><span class="ms">${ms}ms</span>`;
+    log.appendChild(line);
+    if (log.children.length > 22) log.removeChild(log.firstChild);
+  }
+  function appendReady(totalSec) {
+    const log = document.getElementById("boot-log");
+    if (!log) return;
+    const line = document.createElement("div");
+    line.className = "b-line ready";
+    line.dataset.t = "OK";
+    line.innerHTML = `<span class="tag">[ OK  ]</span><span class="msg">Welcome, krish. Ready in ${totalSec}s.<span class="b-cursor"></span></span><span class="ms"></span>`;
+    log.appendChild(line);
+    const stat = document.getElementById("boot-status");
+    if (stat) stat.textContent = "ready.";
+  }
+
+  function runBoot() {
+    updateUptime();
+    bootUptimeTimer = setInterval(updateUptime, 40);
+    let cursor = 0;
+    BOOT_LOG.forEach((entry) => {
+      cursor += entry.d;
+      bootTimers.push(setTimeout(() => appendBoot(entry.t, entry.msg, entry.ms), cursor));
+    });
+    bootTimers.push(setTimeout(() => {
+      const totalSec = ((performance.now() - bootStart) / 1000).toFixed(2);
+      appendReady(totalSec);
+    }, cursor + 220));
+    bootTimers.push(setTimeout(() => dismissBoot(), cursor + 900));
+  }
+
+  function dismissBoot() {
+    if (bootDismissed) return;
+    bootDismissed = true;
+    if (bootUptimeTimer) clearInterval(bootUptimeTimer);
+    bootTimers.forEach(id => clearTimeout(id));
+    const b = document.getElementById("boot");
+    if (!b) return;
+    b.classList.add("gone");
+    setTimeout(() => b.remove(), 400);
+  }
+
+  window.addEventListener("keydown", (e) => {
+    const b = document.getElementById("boot");
+    if (b && !bootDismissed) { e.preventDefault(); dismissBoot(); }
+  }, { once: true });
+
+  (function bootKickoff() {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      BOOT_LOG.forEach(e => appendBoot(e.t, e.msg, e.ms));
+      appendReady("0.00");
+      setTimeout(() => dismissBoot(), 600);
+    } else {
+      runBoot();
+    }
+  })();
+
+  // ---------- Clock ----------
+  function tick() {
+    const d = new Date();
+    let h = d.getHours(), m = d.getMinutes();
+    const ampm = h >= 12 ? "PM" : "AM";
+    h = h % 12; if (h === 0) h = 12;
+    const wd = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getDay()];
+    const md = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][d.getMonth()] + " " + d.getDate();
+    const el = document.getElementById("clock");
+    if (el) el.textContent = `${wd} ${md}  ${h}:${String(m).padStart(2,"0")} ${ampm}`;
+  }
+  tick(); setInterval(tick, 15000);
+
+  // ---------- Windows ----------
+  let zTop = 100;
+  function openWindow(key) {
+    const w = document.getElementById("win-" + key);
+    if (!w) return;
+    w.hidden = false;
+    focusWindow(w);
+    if (key === "projects" && !document.getElementById("proj-grid").children.length) renderProjects();
+    if (key === "skills") runTerminal();
+  }
+  function closeWindow(id) {
+    const w = document.getElementById(id);
+    if (w) w.hidden = true;
+    if (id === "win-skills") resetTerminal();
+  }
+  function focusWindow(w) {
+    zTop += 1;
+    w.style.zIndex = zTop;
+    document.querySelectorAll(".window").forEach(win => {
+      const tb = win.querySelector(".titlebar");
+      if (tb) tb.classList.add("inactive");
+    });
+    const tb = w.querySelector(".titlebar");
+    if (tb) tb.classList.remove("inactive");
+  }
+  document.querySelectorAll(".window").forEach(w => {
+    w.addEventListener("mousedown", () => focusWindow(w));
+    w.addEventListener("touchstart", () => focusWindow(w), { passive: true });
+  });
+
+  // Dragging
+  let drag = null;
+  function startDrag(e, id) {
+    if (e.target.closest(".traffic-lights")) return;
+    const w = document.getElementById(id);
+    if (!w) return;
+    focusWindow(w);
+    const pt = pointer(e);
+    const rect = w.getBoundingClientRect();
+    drag = { w, dx: pt.x - rect.left, dy: pt.y - rect.top };
+    const tb = w.querySelector(".titlebar");
+    if (tb) tb.classList.add("dragging");
+    e.preventDefault();
+  }
+  function pointer(e) {
+    if (e.touches && e.touches[0]) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    return { x: e.clientX, y: e.clientY };
+  }
+  window.addEventListener("mousemove", (e) => {
+    if (!drag) return;
+    const pt = pointer(e);
+    let x = pt.x - drag.dx, y = pt.y - drag.dy;
+    x = Math.max(-40, Math.min(x, window.innerWidth - 60));
+    y = Math.max(26, Math.min(y, window.innerHeight - 60));
+    drag.w.style.left = x + "px";
+    drag.w.style.top = y + "px";
+  });
+  window.addEventListener("touchmove", (e) => {
+    if (!drag) return;
+    const pt = pointer(e);
+    let x = pt.x - drag.dx, y = pt.y - drag.dy;
+    x = Math.max(-40, Math.min(x, window.innerWidth - 60));
+    y = Math.max(26, Math.min(y, window.innerHeight - 60));
+    drag.w.style.left = x + "px";
+    drag.w.style.top = y + "px";
+    e.preventDefault();
+  }, { passive: false });
+  function endDrag() {
+    if (drag) {
+      const tb = drag.w.querySelector(".titlebar");
+      if (tb) tb.classList.remove("dragging");
+    }
+    drag = null;
+  }
+  window.addEventListener("mouseup", endDrag);
+  window.addEventListener("touchend", endDrag);
+
+  // Icon selection
+  function selectIcon(el) {
+    document.querySelectorAll(".icon").forEach(i => i.classList.remove("selected"));
+    el.classList.add("selected");
+  }
+  document.getElementById("desktop").addEventListener("click", (e) => {
+    if (e.target.id === "desktop" || e.target.id === "icons") {
+      document.querySelectorAll(".icon").forEach(i => i.classList.remove("selected"));
+    }
+  });
+  // Touch: single-tap open
+  if ("ontouchstart" in window) {
+    document.querySelectorAll(".icon[data-window]").forEach(ic => {
+      ic.addEventListener("click", () => openWindow(ic.dataset.window));
+    });
+  }
+
+  // Apple menu
+  function toggleAppleMenu(e) {
+    e.stopPropagation();
+    const wrap = document.getElementById("apple-wrap");
+    const existing = wrap.querySelector(".dropdown");
+    if (existing) { existing.remove(); wrap.classList.remove("open"); return; }
+    const dd = document.createElement("div");
+    dd.className = "dropdown";
+    dd.style.left = "0";
+    dd.innerHTML = `
+      <div class="item" data-act="about">About Me<span class="kb"></span></div>
+      <div class="sep"></div>
+      <div class="item" data-act="projects">Projects<span class="kb">⌘P</span></div>
+      <div class="item" data-act="skills">Skills (Terminal)<span class="kb">⌘S</span></div>
+      <div class="item" data-act="resume">Resume<span class="kb">⌘R</span></div>
+      <div class="item" data-act="contact">Contact<span class="kb"></span></div>
+    `;
+    dd.addEventListener("click", (ev) => {
+      const it = ev.target.closest(".item");
+      if (!it || it.classList.contains("disabled")) return;
+      openWindow(it.dataset.act);
+      dd.remove(); wrap.classList.remove("open");
+    });
+    wrap.appendChild(dd);
+    wrap.classList.add("open");
+  }
+  document.addEventListener("click", (e) => {
+    const wrap = document.getElementById("apple-wrap");
+    if (wrap && !wrap.contains(e.target)) {
+      const dd = wrap.querySelector(".dropdown");
+      if (dd) dd.remove();
+      wrap.classList.remove("open");
+    }
+  });
+
+  // Keyboard shortcuts
+  document.addEventListener("keydown", (e) => {
+    if (!(e.metaKey || e.ctrlKey)) return;
+    const map = { p: "projects", s: "skills", r: "resume" };
+    const k = e.key.toLowerCase();
+    if (map[k]) { e.preventDefault(); openWindow(map[k]); }
+  });
+
+  // ---------- Contact form ----------
+  function composeMailto() {
+    const n = document.getElementById("cf-name").value.trim();
+    const em = document.getElementById("cf-email").value.trim();
+    const s = document.getElementById("cf-subject").value.trim();
+    const m = document.getElementById("cf-message").value.trim();
+    if (!n || !em || !s || !m) return null;
+    const body = `${m}\n\n— ${n}\n${em}`;
+    return { subject: s, body, plain: `From: ${n} <${em}>\nSubject: ${s}\n\n${m}` };
+  }
+  function sendContact(e) {
+    e.preventDefault();
+    const c = composeMailto();
+    if (!c) return;
+    const href = `mailto:krishkaul57@gmail.com?subject=${encodeURIComponent(c.subject)}&body=${encodeURIComponent(c.body)}`;
+    window.location.href = href;
+    toast("Opening your mail app…");
+  }
+  function copyMessage() {
+    const c = composeMailto();
+    if (!c) { toast("Fill in every field first."); return; }
+    const text = `To: krishkaul57@gmail.com\n${c.plain}`;
+    try {
+      navigator.clipboard.writeText(text).then(
+        () => toast("Message copied — paste it into any email client."),
+        () => fallback()
+      );
+    } catch (_) { fallback(); }
+    function fallback() {
+      const ta = document.createElement("textarea");
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); toast("Message copied to clipboard."); }
+      catch (_) { toast("Couldn't copy — press ⌘/Ctrl+C."); }
+      ta.remove();
+    }
+  }
+  function toast(msg) {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => t.classList.remove("show"), 2200);
+  }
+
+  // ---------- Terminal (Skills) ----------
+  const PROMPT = `<span class="prompt-user">krish</span><span class="prompt-at">@</span><span class="prompt-host">macbook</span> <span class="prompt-path">~</span><span class="prompt-caret">%</span>`;
+  function bar(filled, total = 10) {
+    return `<span class="b">${"█".repeat(filled)}</span><span class="d">${"░".repeat(total - filled)}</span>`;
+  }
+  const TERM_SCRIPT = [
+    { type: "line", html: `<span class="comment">Last login: ${new Date().toDateString()} on ttys002</span>` },
+    { type: "cmd",  cmd: "whoami" },
+    { type: "line", html: `krish-kaul` },
+    { type: "line", html: `` },
+
+    { type: "cmd",  cmd: "cat ~/about.md" },
+    { type: "line", html: `<span class="h">Backend &amp; Distributed Systems Engineer</span>` },
+    { type: "line", html: `Thapar Institute of Engineering &amp; Technology · ENC '27 · Patiala, IN` },
+    { type: "line", html: `Focus: scalable APIs, event-driven systems, real-time monitoring.` },
+    { type: "line", html: `` },
+
+    { type: "cmd",  cmd: "cat ~/skills/languages.md" },
+    { type: "line", html: `<span class="k">Primary</span>            Python · TypeScript / JavaScript · SQL` },
+    { type: "line", html: `<span class="k">Comfortable</span>        Java · C · C++ · Bash` },
+    { type: "line", html: `<span class="k">Reading &amp; scripting</span> Kotlin · Go` },
+    { type: "line", html: `` },
+
+    { type: "cmd",  cmd: "ls ~/stack/" },
+    { type: "line", html: `<span class="h">backend/</span>   FastAPI · Node.js · Express · REST · WebSocket · Kafka · Auth` },
+    { type: "line", html: `<span class="h">frontend/</span>  React · Next.js · TypeScript · HTML · CSS` },
+    { type: "line", html: `<span class="h">data/</span>      MongoDB · PostgreSQL · MySQL · Redis` },
+    { type: "line", html: `<span class="h">cloud/</span>     AWS · Google Cloud · Docker · Linux · CI/CD` },
+    { type: "line", html: `<span class="h">tools/</span>     Git · GitHub · Jest · Postman` },
+    { type: "line", html: `<span class="h">applied/</span>   Retrieval-grounded LLM assistant (Kavach) · rule engines · state machines` },
+    { type: "line", html: `` },
+
+    { type: "cmd",  cmd: "cat ~/achievements.log" },
+    { type: "line", html: `<span class="ok">✓</span> <span class="h">Purplle Tech Challenge 2026</span> — met all 16 eval criteria in 48h` },
+    { type: "line", html: `<span class="ok">✓</span> <span class="h">SBI Hackathon @ Global Fintech Fest 2026</span> — SBI FlowSense` },
+    { type: "line", html: `<span class="ok">✓</span> <span class="h">ET AI Hackathon 2026</span> — Kavach AI, real-time industrial risk` },
+    { type: "line", html: `<span class="ok">✓</span> <span class="h">Google AI Hackathon</span> — MATDATA, shipped to Cloud Run in 48h` },
+    { type: "line", html: `<span class="ok">✓</span> <span class="h">Ericsson Edge Academia</span> — top 700 across Asia` },
+    { type: "line", html: `<span class="ok">✓</span> <span class="h">American Express Campus Challenge</span> — Round 2, engineering` },
+    { type: "line", html: `<span class="ok">✓</span> <span class="h">GirlScript Summer of Code 2024</span> — merged OSS contributions` },
+    { type: "line", html: `<span class="ok">✓</span> <span class="h">PARAKH Capstone</span> — team lead, IIT Ropar incubation review` },
+    { type: "line", html: `<span class="ok">✓</span> <span class="h">Convener, Literary &amp; Theatre Society, TIET</span> — led 30+ team` },
+    { type: "line", html: `<span class="ok">✓</span> <span class="h">AWS Academy Cloud Foundations</span> · <span class="h">Deloitte Australia Data Analytics</span>` },
+    { type: "line", html: `` },
+    { type: "cmd",  cmd: "echo $STATUS" },
+    { type: "line", html: `<span class="ok">▪ Open to Jan – Jun 2027 internships</span>` },
+    { type: "line", html: `` },
+
+    { type: "cmd",  cmd: "curl -s links.krish.dev" },
+    { type: "line", html: `github     <span class="u">https://github.com/krish57-bit</span>` },
+    { type: "line", html: `linkedin   <span class="u">https://linkedin.com/in/krish-kaul</span>` },
+    { type: "line", html: `leetcode   <span class="u">https://leetcode.com/u/krish_231</span>` },
+    { type: "line", html: `mail       <span class="u">krishkaul57@gmail.com</span>` },
+    { type: "line", html: `` },
+
+    { type: "prompt", cursor: true }
+  ];
+
+  let termRunning = false;
+  let termRunToken = 0;
+  const termTimers = new Set();
+  function termSchedule(fn, delay) {
+    const id = setTimeout(() => { termTimers.delete(id); fn(); }, delay);
+    termTimers.add(id);
+    return id;
+  }
+  function resetTerminal() {
+    termTimers.forEach(id => clearTimeout(id));
+    termTimers.clear();
+    termRunning = false;
+    termRunToken++;
+    const el = document.getElementById("term-skills");
+    if (el) el.innerHTML = "";
+  }
+  function runTerminal() {
+    const el = document.getElementById("term-skills");
+    if (!el) return;
+    if (termRunning) return;
+    termRunning = true;
+    const token = ++termRunToken;
+    el.innerHTML = "";
+    const body = el.parentElement;
+    let i = 0;
+
+    function alive() { return token === termRunToken; }
+
+    function step() {
+      if (!alive()) return;
+      if (i >= TERM_SCRIPT.length) { termRunning = false; return; }
+      const item = TERM_SCRIPT[i++];
+      if (item.type === "line") {
+        addLine(item.html);
+        termSchedule(step, 22);
+      } else if (item.type === "cmd") {
+        typeCommand(item.cmd, () => termSchedule(step, 180));
+      } else if (item.type === "prompt") {
+        attachInput(el, body);
+        termRunning = false;
+      }
+    }
+
+    function addLine(html) {
+      if (!alive()) return;
+      const l = document.createElement("span");
+      l.className = "term-line";
+      l.innerHTML = html === "" ? "&nbsp;" : html;
+      el.appendChild(l);
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function typeCommand(cmd, done) {
+      if (!alive()) return;
+      const l = document.createElement("span");
+      l.className = "term-line";
+      const promptSpan = document.createElement("span");
+      promptSpan.innerHTML = `${PROMPT} `;
+      const cmdSpan = document.createElement("span");
+      cmdSpan.className = "cmd";
+      const cur = document.createElement("span");
+      cur.className = "term-cursor";
+      l.appendChild(promptSpan);
+      l.appendChild(cmdSpan);
+      l.appendChild(cur);
+      el.appendChild(l);
+      body.scrollTop = body.scrollHeight;
+      let j = 0;
+      (function type() {
+        if (!alive()) { cur.remove(); return; }
+        if (j <= cmd.length) {
+          cmdSpan.textContent = cmd.slice(0, j++);
+          body.scrollTop = body.scrollHeight;
+          termSchedule(type, 22 + Math.random() * 30);
+        } else {
+          cur.remove();
+          done();
+        }
+      })();
+    }
+
+    step();
+  }
+
+  // ---------- Terminal — real interactive input ----------
+  const termHistory = [];
+  let termHistIdx = -1;
+
+  function attachInput(el, body) {
+    // Remove any lingering input
+    const old = el.querySelector(".term-input-wrap");
+    if (old) old.remove();
+
+    const wrap = document.createElement("span");
+    wrap.className = "term-line term-input-wrap";
+    const promptSpan = document.createElement("span");
+    promptSpan.className = "prompt-inline";
+    promptSpan.innerHTML = PROMPT + " ";
+    const input = document.createElement("input");
+    input.className = "term-input";
+    input.type = "text";
+    input.autocomplete = "off";
+    input.spellcheck = false;
+    input.setAttribute("aria-label", "Terminal input");
+    wrap.appendChild(promptSpan);
+    wrap.appendChild(input);
+    el.appendChild(wrap);
+    body.scrollTop = body.scrollHeight;
+    setTimeout(() => input.focus(), 20);
+
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        const cmd = input.value;
+        // Freeze the current line: replace input with static text
+        input.remove();
+        const staticCmd = document.createElement("span");
+        staticCmd.className = "cmd";
+        staticCmd.textContent = cmd;
+        wrap.classList.remove("term-input-wrap");
+        wrap.appendChild(staticCmd);
+
+        if (cmd.trim()) {
+          termHistory.push(cmd);
+          termHistIdx = termHistory.length;
+        }
+        runCmd(cmd, el, body);
+        e.preventDefault();
+      } else if (e.key === "ArrowUp") {
+        if (termHistory.length === 0) return;
+        termHistIdx = Math.max(0, termHistIdx - 1);
+        input.value = termHistory[termHistIdx] || "";
+        setTimeout(() => input.setSelectionRange(input.value.length, input.value.length), 0);
+        e.preventDefault();
+      } else if (e.key === "ArrowDown") {
+        if (termHistory.length === 0) return;
+        termHistIdx = Math.min(termHistory.length, termHistIdx + 1);
+        input.value = termHistory[termHistIdx] || "";
+        e.preventDefault();
+      } else if (e.key === "l" && (e.ctrlKey || e.metaKey)) {
+        // Ctrl+L clears
+        el.innerHTML = "";
+        attachInput(el, body);
+        e.preventDefault();
+      } else if (e.key === "c" && e.ctrlKey) {
+        // Ctrl+C aborts current line
+        input.value = "";
+        e.preventDefault();
+      }
+    });
+
+    // Clicking anywhere in the terminal body refocuses input
+    body.addEventListener("click", (ev) => {
+      if (ev.target.closest(".term-input-wrap")) return;
+      const live = el.querySelector(".term-input");
+      if (live) live.focus();
+    }, { once: true });
+  }
+
+  function termWrite(el, body, html) {
+    const l = document.createElement("span");
+    l.className = "term-line";
+    l.innerHTML = html === "" ? "&nbsp;" : html;
+    el.appendChild(l);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  const CMD_ALIASES = {
+    "about": "about", "me": "about",
+    "projects": "projects", "work": "projects",
+    "skills": "skills", "stack": "skills",
+    "resume": "resume", "cv": "resume",
+    "contact": "contact", "hire": "contact"
+  };
+
+  function runCmd(raw, el, body) {
+    const line = raw.trim();
+    if (!line) { attachInput(el, body); return; }
+    const [cmd, ...args] = line.split(/\s+/);
+    const c = cmd.toLowerCase();
+    const done = () => { attachInput(el, body); };
+
+    switch (c) {
+      case "help": case "?":
+        termWrite(el, body, `<span class="h">available commands</span>`);
+        termWrite(el, body, `<span class="k">about</span>       open the About window`);
+        termWrite(el, body, `<span class="k">projects</span>    list &amp; open projects (try: projects kavach)`);
+        termWrite(el, body, `<span class="k">skills</span>      show skills summary`);
+        termWrite(el, body, `<span class="k">resume</span>      open the resume`);
+        termWrite(el, body, `<span class="k">contact</span>     open the contact window`);
+        termWrite(el, body, `<span class="k">ls</span>          list open windows`);
+        termWrite(el, body, `<span class="k">open &lt;name&gt;</span> open a window (about/projects/skills/resume/contact)`);
+        termWrite(el, body, `<span class="k">cat &lt;name&gt;</span>  print about / stack / links inline`);
+        termWrite(el, body, `<span class="k">github</span> · <span class="k">linkedin</span> · <span class="k">leetcode</span> · <span class="k">email</span>`);
+        termWrite(el, body, `<span class="k">clear</span>       clear the terminal   (or Ctrl+L)`);
+        termWrite(el, body, `<span class="k">whoami</span> · <span class="k">date</span> · <span class="k">exit</span>`);
+        termWrite(el, body, ``);
+        done(); break;
+
+      case "whoami":
+        termWrite(el, body, `krish-kaul`);
+        done(); break;
+
+      case "date":
+        termWrite(el, body, new Date().toString());
+        done(); break;
+
+      case "ls":
+        {
+          const openWins = [...document.querySelectorAll(".window:not([hidden])")].map(w =>
+            w.querySelector(".titlebar .title")?.textContent || w.id
+          );
+          if (openWins.length) openWins.forEach(n => termWrite(el, body, n));
+          else termWrite(el, body, `<span class="comment">no windows open</span>`);
+          termWrite(el, body, ``);
+        }
+        done(); break;
+
+      case "clear": case "cls":
+        el.innerHTML = "";
+        attachInput(el, body);
+        return;
+
+      case "open":
+        {
+          const key = CMD_ALIASES[(args[0] || "").toLowerCase()];
+          if (key) { openWindow(key); termWrite(el, body, `opening <span class="ok">${key}</span>...`); }
+          else termWrite(el, body, `<span class="err">open: unknown window '${args[0] || ""}'</span>`);
+          termWrite(el, body, ``);
+        }
+        done(); break;
+
+      case "about": case "projects": case "skills": case "resume": case "contact":
+        openWindow(c);
+        termWrite(el, body, `opening <span class="ok">${c}</span>...`);
+        termWrite(el, body, ``);
+        done(); break;
+
+      case "cat":
+        {
+          const t = (args[0] || "").toLowerCase();
+          if (t === "about" || t === "about.md") {
+            termWrite(el, body, `<span class="h">Krish Kaul</span> — final-year ENC @ Thapar Institute.`);
+            termWrite(el, body, `Backend &amp; distributed-systems: FastAPI, Kafka, WebSocket, Mongo.`);
+            termWrite(el, body, `Recent: Kavach AI (ET AI Hackathon), SBI FlowSense (GFF), MATDATA (Google AI Hackathon).`);
+          } else if (t === "stack" || t === "skills") {
+            termWrite(el, body, `Python · TypeScript · JavaScript · Java · C/C++ · SQL · Bash`);
+            termWrite(el, body, `FastAPI · Node.js · Kafka · WebSocket · MongoDB · Redis · Postgres · Docker · AWS · GCP`);
+          } else if (t === "links" || t === "contact") {
+            termWrite(el, body, `github     <span class="u">https://github.com/krish57-bit</span>`);
+            termWrite(el, body, `linkedin   <span class="u">https://linkedin.com/in/krish-kaul</span>`);
+            termWrite(el, body, `leetcode   <span class="u">https://leetcode.com/u/krish_231</span>`);
+            termWrite(el, body, `email      <span class="u">krishkaul57@gmail.com</span>`);
+          } else {
+            termWrite(el, body, `<span class="err">cat: no such file '${args[0] || ""}'</span> — try: about, stack, links`);
+          }
+          termWrite(el, body, ``);
+        }
+        done(); break;
+
+      case "github":
+        window.open("https://github.com/krish57-bit", "_blank", "noopener");
+        termWrite(el, body, `opened github.com/krish57-bit`); termWrite(el, body, ``); done(); break;
+      case "linkedin":
+        window.open("https://www.linkedin.com/in/krish-kaul-0b6bb3233/", "_blank", "noopener");
+        termWrite(el, body, `opened linkedin.com/in/krish-kaul`); termWrite(el, body, ``); done(); break;
+      case "leetcode":
+        window.open("https://leetcode.com/u/krish_231/", "_blank", "noopener");
+        termWrite(el, body, `opened leetcode.com/u/krish_231`); termWrite(el, body, ``); done(); break;
+      case "email": case "mail":
+        window.location.href = "mailto:krishkaul57@gmail.com";
+        termWrite(el, body, `composing mail to krishkaul57@gmail.com`); termWrite(el, body, ``); done(); break;
+
+      case "exit": case "quit":
+        closeWindow("win-skills");
+        return;
+
+      case "sudo":
+        if (args.join(" ").toLowerCase() === "hire me") {
+          termWrite(el, body, `<span class="ok">✓</span> request queued. cc: <span class="u">krishkaul57@gmail.com</span>`);
+        } else {
+          termWrite(el, body, `<span class="err">krish is not in the sudoers file. This incident will be reported.</span>`);
+        }
+        termWrite(el, body, ``);
+        done(); break;
+
+      default:
+        termWrite(el, body, `<span class="err">zsh: command not found: ${cmd}</span> — try <span class="k">help</span>`);
+        termWrite(el, body, ``);
+        done();
+    }
+  }
+
+  // ---------- Spotlight (⌘K / ⌘Space) ----------
+  const SP_ITEMS = [
+    { label: "About Me",  kind: "Window", glyph: "i",  action: () => openWindow("about") },
+    { label: "Projects",  kind: "Window", glyph: "📁", action: () => openWindow("projects") },
+    { label: "Skills — Terminal", kind: "Window", glyph: ">_", action: () => openWindow("skills") },
+    { label: "Resume",    kind: "Window", glyph: "📄", action: () => openWindow("resume") },
+    { label: "Contact",   kind: "Window", glyph: "✉", action: () => openWindow("contact") },
+    { label: "Kavach AI — Real-Time Monitoring",  kind: "Project", glyph: "K", action: () => { openWindow("projects"); setTimeout(() => selectProject("kavach"), 100); } },
+    { label: "SBI FlowSense — Event-Driven Banking", kind: "Project", glyph: "S", action: () => { openWindow("projects"); setTimeout(() => selectProject("sbi"), 100); } },
+    { label: "VenueSync AI · MATDATA",  kind: "Project", glyph: "V", action: () => { openWindow("projects"); setTimeout(() => selectProject("venuesync"), 100); } },
+    { label: "Wanderlust — Full-Stack Travel", kind: "Project", glyph: "W", action: () => { openWindow("projects"); setTimeout(() => selectProject("wanderlust"), 100); } },
+    { label: "DriveSafeAI — Research", kind: "Project", glyph: "D", action: () => { openWindow("projects"); setTimeout(() => selectProject("drivesafe"), 100); } },
+    { label: "GitHub — krish57-bit",   kind: "Link", glyph: "↗", action: () => window.open("https://github.com/krish57-bit", "_blank", "noopener") },
+    { label: "LinkedIn — krish-kaul",  kind: "Link", glyph: "↗", action: () => window.open("https://www.linkedin.com/in/krish-kaul-0b6bb3233/", "_blank", "noopener") },
+    { label: "LeetCode — krish_231",   kind: "Link", glyph: "↗", action: () => window.open("https://leetcode.com/u/krish_231/", "_blank", "noopener") },
+    { label: "Email krishkaul57@gmail.com", kind: "Link", glyph: "✉", action: () => { window.location.href = "mailto:krishkaul57@gmail.com"; } }
+  ];
+
+  let spActive = 0;
+  let spVisible = [];
+
+  function openSpotlight() {
+    const sp = document.getElementById("spotlight");
+    const input = document.getElementById("sp-input");
+    sp.hidden = false;
+    input.value = "";
+    renderSpotlight("");
+    setTimeout(() => input.focus(), 30);
+  }
+  function closeSpotlight() {
+    document.getElementById("spotlight").hidden = true;
+  }
+  function renderSpotlight(q) {
+    const query = q.trim().toLowerCase();
+    spVisible = query
+      ? SP_ITEMS.filter(it => it.label.toLowerCase().includes(query) || it.kind.toLowerCase().includes(query))
+      : SP_ITEMS;
+    spActive = 0;
+    const box = document.getElementById("sp-results");
+    if (!spVisible.length) {
+      box.innerHTML = `<div class="sp-empty">Nothing matches "${q}"</div>`;
+      return;
+    }
+    box.innerHTML = spVisible.map((it, i) =>
+      `<div class="sp-item${i === 0 ? " active" : ""}" data-i="${i}">
+        <span class="glyph">${it.glyph}</span>
+        <span>${it.label}</span>
+        <span class="kind">${it.kind}</span>
+      </div>`
+    ).join("");
+    box.querySelectorAll(".sp-item").forEach(el => {
+      el.addEventListener("mouseenter", () => setSpActive(parseInt(el.dataset.i)));
+      el.addEventListener("click", () => spActivate());
+    });
+  }
+  function setSpActive(i) {
+    spActive = i;
+    document.querySelectorAll("#sp-results .sp-item").forEach((el, idx) =>
+      el.classList.toggle("active", idx === i)
+    );
+    const active = document.querySelector("#sp-results .sp-item.active");
+    if (active) active.scrollIntoView({ block: "nearest" });
+  }
+  function spActivate() {
+    const it = spVisible[spActive];
+    if (!it) return;
+    closeSpotlight();
+    it.action();
+  }
+  document.addEventListener("input", (e) => {
+    if (e.target.id === "sp-input") renderSpotlight(e.target.value);
+  });
+  document.addEventListener("keydown", (e) => {
+    const sp = document.getElementById("spotlight");
+    // Open Spotlight: ⌘K (or Ctrl+K)
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault(); openSpotlight(); return;
+    }
+    if (sp.hidden) return;
+    // Inside Spotlight:
+    if (e.key === "Escape") { e.preventDefault(); closeSpotlight(); }
+    else if (e.key === "ArrowDown") { e.preventDefault(); setSpActive(Math.min(spVisible.length - 1, spActive + 1)); }
+    else if (e.key === "ArrowUp")   { e.preventDefault(); setSpActive(Math.max(0, spActive - 1)); }
+    else if (e.key === "Enter")     { e.preventDefault(); spActivate(); }
+  });
+  // Click outside closes
+  document.addEventListener("mousedown", (e) => {
+    const sp = document.getElementById("spotlight");
+    if (!sp.hidden && !sp.contains(e.target) && !e.target.closest(".ic.spotlight")) closeSpotlight();
+  });
+
+  // Reduced-motion — skip typed animation, dump content instantly
+  const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (REDUCED) {
+    // Override runTerminal to render everything statically
+    const _run = runTerminal;
+    runTerminal = function () {
+      const el = document.getElementById("term-skills");
+      if (!el || termRunning) return;
+      termRunning = true;
+      el.innerHTML = "";
+      const body = el.parentElement;
+      TERM_SCRIPT.forEach(item => {
+        if (item.type === "line") termWrite(el, body, item.html);
+        else if (item.type === "cmd") termWrite(el, body, `${PROMPT} <span class="cmd">${item.cmd}</span>`);
+      });
+      attachInput(el, body);
+      termRunning = false;
+    };
+  }
+
+  // Open About shortly after boot
+  setTimeout(() => openWindow("about"), REDUCED ? 300 : 3000);
+</script>
