@@ -1499,9 +1499,55 @@
   }
   function closeWindow(id) {
     const w = document.getElementById(id);
-    if (w) w.hidden = true;
+    if (w) {
+      // if the window was zoomed, restore it first so re-opening returns to its normal size
+      if (w.dataset.zoomed === "1") toggleZoom(id);
+      w.hidden = true;
+    }
     if (id === "win-skills") resetTerminal();
   }
+
+  function toggleZoom(id) {
+    const w = document.getElementById(id);
+    if (!w) return;
+    const body = w.querySelector(".window-body");
+    if (w.dataset.zoomed === "1") {
+      // restore
+      w.style.width  = w.dataset.prevW || "";
+      w.style.height = w.dataset.prevH || "";
+      w.style.left   = w.dataset.prevL || "";
+      w.style.top    = w.dataset.prevT || "";
+      if (body) body.style.maxHeight = "";
+      delete w.dataset.zoomed;
+    } else {
+      // save current geometry, then maximize into the desktop area
+      const r = w.getBoundingClientRect();
+      w.dataset.prevW = w.style.width  || `${Math.round(r.width)}px`;
+      w.dataset.prevH = w.style.height || "";
+      w.dataset.prevL = w.style.left   || `${Math.round(r.left)}px`;
+      w.dataset.prevT = w.style.top    || `${Math.round(r.top)}px`;
+      w.style.left   = "16px";
+      w.style.top    = "34px";
+      w.style.width  = "calc(100vw - 32px)";
+      w.style.height = "calc(100vh - 120px)";
+      if (body) body.style.maxHeight = "calc(100vh - 180px)";
+      w.dataset.zoomed = "1";
+      focusWindow(w);
+    }
+  }
+
+  // Delegated traffic-light handler — clicking any tl (red/yellow/green) triggers its action
+  // even if inline onclick is missing. Also stops the click from bubbling to focus/drag handlers.
+  document.addEventListener("click", function (e) {
+    const tl = e.target.closest(".tl");
+    if (!tl) return;
+    const win = tl.closest(".window");
+    if (!win) return;
+    e.stopPropagation();
+    if (tl.classList.contains("red"))         closeWindow(win.id);
+    else if (tl.classList.contains("yellow")) closeWindow(win.id);   // no dock spot to minimize into — hide
+    else if (tl.classList.contains("green"))  toggleZoom(win.id);
+  }, true);  // capture-phase, so we run before other listeners
   function focusWindow(w) {
     zTop += 1;
     w.style.zIndex = zTop;
