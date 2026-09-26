@@ -1,4 +1,14 @@
-<title>Krish Kaul — Portfolio</title>
+<title>Krish's Portfolio</title>
+<meta name="description" content="Krish Kaul — backend & distributed-systems engineer. macOS-style interactive portfolio.">
+<meta name="theme-color" content="#0f0723">
+<meta property="og:title" content="Krish's Portfolio">
+<meta property="og:description" content="Backend engineer building event-driven systems — Kafka, FastAPI, WebSocket. An interactive macOS desktop, not a page.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://krish57-bit.github.io/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Krish's Portfolio">
+<meta name="twitter:description" content="Backend engineer building event-driven systems. Interactive macOS desktop portfolio.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 108 108'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%230a84ff'/><stop offset='0.55' stop-color='%238b5cf6'/><stop offset='1' stop-color='%23ec4899'/></linearGradient></defs><rect x='4' y='4' width='100' height='100' rx='26' fill='url(%23g)'/><path d='M 38 26 L 38 82 M 38 54 L 72 26 M 46 54 L 76 82' stroke='%23fff' stroke-width='8' stroke-linecap='round' fill='none'/><circle cx='83' cy='82' r='5.5' fill='%23febc2e'/></svg>">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
   :root {
@@ -811,6 +821,177 @@
     #menubar .ic.gh-live { display: none !important; }
   }
 
+  /* Weather widget (menu bar) */
+  #menubar .ic.weather {
+    display: flex; align-items: center; gap: 5px;
+    color: #fff; text-decoration: none;
+    font-size: 12px; font-weight: 500;
+    padding: 2px 8px; border-radius: 6px;
+    transition: background 0.15s;
+  }
+  #menubar .ic.weather:hover { background: rgba(255,255,255,0.22); }
+  #menubar .w-icon { font-size: 14px; line-height: 1; }
+  #menubar .w-txt  { font-variant-numeric: tabular-nums; }
+  @media (max-width: 640px) {
+    #menubar .ic.weather .w-txt-city { display: none; }
+    #menubar .ic.weather { padding: 2px 5px; }
+  }
+
+  /* Weather popover */
+  #weather-pop {
+    position: fixed;
+    top: 30px;
+    background: rgba(30,30,34,0.85);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 0.5px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    min-width: 240px;
+    padding: 14px 16px;
+    color: #f5f5f7;
+    z-index: 3500;
+    font-family: var(--font-ui);
+  }
+  #weather-pop[hidden] { display: none; }
+  #weather-pop .wp-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+  #weather-pop .wp-city { font-size: 13px; color: rgba(255,255,255,0.6); }
+  #weather-pop .wp-temp { font-size: 34px; font-weight: 600; letter-spacing: -0.02em; font-family: var(--font-display); }
+  #weather-pop .wp-cond { font-size: 13px; color: rgba(255,255,255,0.75); margin-bottom: 12px; }
+  #weather-pop .wp-days {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 10px; padding-top: 10px;
+    border-top: 0.5px solid rgba(255,255,255,0.1);
+  }
+  #weather-pop .wp-day {
+    text-align: center;
+    font-size: 12px;
+  }
+  #weather-pop .wp-day .d { color: rgba(255,255,255,0.55); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; }
+  #weather-pop .wp-day .g { font-size: 22px; line-height: 1; margin: 4px 0; }
+  #weather-pop .wp-day .h { color: #fff; }
+  #weather-pop .wp-day .l { color: rgba(255,255,255,0.55); font-size: 11px; }
+  #weather-pop .wp-src { font-size: 10px; color: rgba(255,255,255,0.35); text-align: right; margin-top: 10px; }
+
+  /* macOS-style app dropdown menus (File/Edit/View/…) */
+  .app-menu-dd {
+    position: fixed;
+    top: 26px;
+    background: rgba(240,240,240,0.9);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 0.5px solid rgba(0,0,0,0.2);
+    border-radius: 8px;
+    box-shadow: 0 14px 36px rgba(0,0,0,0.35);
+    min-width: 220px;
+    padding: 5px;
+    z-index: 2000;
+    font-size: 13px;
+    color: var(--ink);
+    text-shadow: none;
+  }
+  .app-menu-dd[hidden] { display: none; }
+  .app-menu-dd .item {
+    padding: 5px 12px;
+    cursor: default;
+    border-radius: 5px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px;
+    white-space: nowrap;
+  }
+  .app-menu-dd .item:hover { background: var(--accent); color: #fff; }
+  .app-menu-dd .item .kb { font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); }
+  .app-menu-dd .item:hover .kb { color: rgba(255,255,255,0.85); }
+  .app-menu-dd .item.disabled { color: var(--ink-3); }
+  .app-menu-dd .item.disabled:hover { background: transparent; color: var(--ink-3); }
+  .app-menu-dd .sep { height: 1px; background: rgba(0,0,0,0.12); margin: 5px 6px; }
+
+  /* ============ MINESWEEPER ============ */
+  .ms-window .window-body { padding: 12px; background: #c0c0c0 !important; }
+  .ms-panel {
+    background: linear-gradient(180deg, #d4d4d4 0%, #c0c0c0 100%);
+    border: 2px solid;
+    border-color: #fff #7b7b7b #7b7b7b #fff;
+    padding: 6px;
+  }
+  .ms-topbar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 6px 8px; margin-bottom: 6px;
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #7b7b7b #fff #fff #7b7b7b;
+  }
+  .ms-lcd {
+    font-family: "DSEG7 Classic", "JetBrains Mono", monospace;
+    font-weight: 700;
+    background: #000;
+    color: #ff2c2c;
+    padding: 4px 8px;
+    font-size: 20px;
+    letter-spacing: 2px;
+    border: 2px solid;
+    border-color: #7b7b7b #fff #fff #7b7b7b;
+    min-width: 52px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .ms-face {
+    width: 30px; height: 30px;
+    font-size: 20px;
+    display: grid; place-items: center;
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #fff #7b7b7b #7b7b7b #fff;
+    cursor: pointer;
+    user-select: none;
+  }
+  .ms-face:active { border-color: #7b7b7b #fff #fff #7b7b7b; }
+  .ms-grid {
+    display: grid;
+    gap: 0;
+    border: 3px solid;
+    border-color: #7b7b7b #fff #fff #7b7b7b;
+    background: #7b7b7b;
+    width: fit-content;
+    margin: 0 auto;
+  }
+  .ms-cell {
+    width: 24px; height: 24px;
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #fff #7b7b7b #7b7b7b #fff;
+    display: grid; place-items: center;
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .ms-cell.revealed {
+    border: 1px solid #7b7b7b;
+    background: #bdbdbd;
+    cursor: default;
+  }
+  .ms-cell.mine {
+    background: #ff4d4f;
+    border: 1px solid #7b7b7b;
+  }
+  .ms-cell.flag { color: #d40000; }
+  .ms-cell[data-n="1"] { color: #0000ff; }
+  .ms-cell[data-n="2"] { color: #008000; }
+  .ms-cell[data-n="3"] { color: #ff0000; }
+  .ms-cell[data-n="4"] { color: #000080; }
+  .ms-cell[data-n="5"] { color: #800000; }
+  .ms-cell[data-n="6"] { color: #008080; }
+  .ms-cell[data-n="7"] { color: #000000; }
+  .ms-cell[data-n="8"] { color: #808080; }
+  .ms-caption {
+    margin-top: 8px;
+    text-align: center;
+    font-size: 11px;
+    color: #444;
+  }
+
   /* Reduced motion — respect the setting */
   @media (prefers-reduced-motion: reduce) {
     #wallpaper { animation: none !important; }
@@ -862,24 +1043,29 @@
 <!-- ============ MENU BAR ============ -->
 <div id="menubar">
   <div class="apple-wrap" id="apple-wrap">
-    <div class="menu name" onclick="toggleAppleMenu(event)" title="Portfolio menu">Krish Kaul</div>
+    <div class="menu name" data-app-menu="apple" onclick="toggleAppMenu(event, 'apple')" title="Krish Kaul menu">Krish Kaul</div>
   </div>
-  <div class="menu" onclick="openWindow('about')">About</div>
-  <div class="menu" onclick="openWindow('projects')">Projects</div>
-  <div class="menu" onclick="openWindow('skills')">Skills</div>
-  <div class="menu" onclick="openWindow('resume')">Resume</div>
-  <div class="menu" onclick="openWindow('contact')">Contact</div>
+  <div class="menu" data-app-menu="file"   onclick="toggleAppMenu(event, 'file')">File</div>
+  <div class="menu" data-app-menu="edit"   onclick="toggleAppMenu(event, 'edit')">Edit</div>
+  <div class="menu" data-app-menu="view"   onclick="toggleAppMenu(event, 'view')">View</div>
+  <div class="menu" data-app-menu="window" onclick="toggleAppMenu(event, 'window')">Window</div>
+  <div class="menu" data-app-menu="games"  onclick="toggleAppMenu(event, 'games')">Games</div>
+  <div class="menu" data-app-menu="help"   onclick="toggleAppMenu(event, 'help')">Help</div>
   <div class="right">
+    <a class="ic weather" id="weather" title="Loading weather…" href="#" onclick="return toggleWeather(event)" hidden>
+      <span class="w-icon" id="w-icon">☀︎</span>
+      <span class="w-txt" id="w-txt">—</span>
+    </a>
+    <a class="ic gh-live" id="gh-live" title="Loading GitHub activity…" href="https://github.com/krish57-bit" target="_blank" rel="noopener" hidden>
+      <span class="gh-dot"></span>
+      <span class="gh-txt" id="gh-live-txt">—</span>
+    </a>
     <span class="ic" title="Battery">
       <svg width="24" height="14" viewBox="0 0 24 14" fill="none"><rect x="0.5" y="0.5" width="20" height="13" rx="2.5" stroke="#fff"/><rect x="2" y="2" width="17" height="10" rx="1.5" fill="#fff"/><rect x="21" y="4" width="2" height="6" rx="1" fill="#fff"/></svg>
     </span>
     <span class="ic" title="Wi-Fi">
       <svg width="16" height="12" viewBox="0 0 16 12" fill="#fff"><path d="M8 12c.8 0 1.4-.6 1.4-1.4S8.8 9.2 8 9.2s-1.4.6-1.4 1.4S7.2 12 8 12zM5.2 8.4c1.5-1.5 4-1.5 5.6 0l.9-.9c-2-2-5.4-2-7.4 0l.9.9zM2.5 5.6C5.5 2.6 10.5 2.6 13.5 5.6l.9-.9C10.9 1.2 5.1 1.2 1.6 4.7l.9.9z"/></svg>
     </span>
-    <a class="ic gh-live" id="gh-live" title="Loading GitHub activity…" href="https://github.com/krish57-bit" target="_blank" rel="noopener" hidden>
-      <span class="gh-dot"></span>
-      <span class="gh-txt" id="gh-live-txt">—</span>
-    </a>
     <span class="ic spotlight" title="Spotlight (⌘K)" onclick="openSpotlight()">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#fff" stroke-width="1.5"/><line x1="11" y1="11" x2="14.5" y2="14.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
     </span>
@@ -887,6 +1073,43 @@
       <svg width="16" height="10" viewBox="0 0 16 10" fill="#fff"><rect x="0" y="0" width="16" height="4" rx="2"/><rect x="0" y="6" width="16" height="4" rx="2"/></svg>
     </span>
     <span class="clock" id="clock">--:--</span>
+  </div>
+</div>
+
+<!-- ============ WEATHER POPOVER ============ -->
+<div id="weather-pop" hidden>
+  <div class="wp-head">
+    <div class="wp-temp" id="wp-temp">—</div>
+    <div class="wp-city" id="wp-city">Loading…</div>
+  </div>
+  <div class="wp-cond" id="wp-cond"></div>
+  <div class="wp-days" id="wp-days"></div>
+  <div class="wp-src">Open-Meteo · updated <span id="wp-updated">now</span></div>
+</div>
+
+<!-- ============ APP MENU (single dropdown, content swapped) ============ -->
+<div id="app-menu-dd" class="app-menu-dd" hidden></div>
+
+<!-- ============ MINESWEEPER WINDOW ============ -->
+<div class="window ms-window" id="win-minesweeper" hidden style="width: 292px; left: calc(50% - 146px); top: 80px;">
+  <div class="titlebar" onmousedown="startDrag(event, 'win-minesweeper')" ontouchstart="startDrag(event, 'win-minesweeper')">
+    <div class="traffic-lights">
+      <div class="tl red"><svg viewBox="0 0 8 8"><path d="M1 1 L7 7 M7 1 L1 7" stroke="#4d0000" stroke-width="1.2"/></svg></div>
+      <div class="tl yellow"><svg viewBox="0 0 8 8"><line x1="1.5" y1="4" x2="6.5" y2="4" stroke="#7a4d00" stroke-width="1.2"/></svg></div>
+      <div class="tl green"><svg viewBox="0 0 8 8"><line x1="4" y1="1.5" x2="4" y2="6.5" stroke="#004d00" stroke-width="1.2"/><line x1="1.5" y1="4" x2="6.5" y2="4" stroke="#004d00" stroke-width="1.2"/></svg></div>
+    </div>
+    <div class="title">Minesweeper</div>
+  </div>
+  <div class="window-body">
+    <div class="ms-panel">
+      <div class="ms-topbar">
+        <div class="ms-lcd" id="ms-mines">010</div>
+        <div class="ms-face" id="ms-face" title="New game">🙂</div>
+        <div class="ms-lcd" id="ms-timer">000</div>
+      </div>
+      <div class="ms-grid" id="ms-grid"></div>
+    </div>
+    <div class="ms-caption">Left-click reveal · Right-click flag · Click face to restart</div>
   </div>
 </div>
 
@@ -992,6 +1215,19 @@
         </svg>
       </div>
       <div class="label">Contact</div>
+    </div>
+
+    <div class="icon" data-window="minesweeper" ondblclick="openWindow('minesweeper')" onclick="selectIcon(this)">
+      <div class="art">
+        <svg viewBox="0 0 52 52" width="52" height="52">
+          <rect x="2" y="2" width="48" height="48" rx="10" fill="#c0c0c0" stroke="#7b7b7b" stroke-width="0.5"/>
+          <rect x="8" y="8" width="36" height="36" fill="#bdbdbd" stroke="#7b7b7b" stroke-width="0.5"/>
+          <circle cx="26" cy="26" r="10" fill="#1a1a1a"/>
+          <path d="M26 12 V16 M26 36 V40 M12 26 H16 M36 26 H40 M16 16 L19 19 M33 33 L36 36 M16 36 L19 33 M33 19 L36 16" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="22" cy="22" r="3" fill="#fff"/>
+        </svg>
+      </div>
+      <div class="label">Minesweeper</div>
     </div>
   </div>
 </div>
@@ -1473,6 +1709,229 @@
     if (b && !bootDismissed) { e.preventDefault(); dismissBoot(); }
   }, { once: true });
 
+  // ---------- Minesweeper ----------
+  const MS_ROWS = 9, MS_COLS = 9, MS_MINES = 10;
+  let msBoard = null, msRevealed = 0, msFlagged = 0, msFirstClick = true, msDead = false, msWon = false;
+  let msTimer = 0, msTimerId = null;
+
+  function mineStart() {
+    // fresh board only if we haven't yet built one or user restarted
+    if (!msBoard) mineReset();
+  }
+  function mineReset() {
+    msBoard = [];
+    for (let r = 0; r < MS_ROWS; r++) {
+      const row = [];
+      for (let c = 0; c < MS_COLS; c++) row.push({ mine: false, n: 0, revealed: false, flagged: false });
+      msBoard.push(row);
+    }
+    msRevealed = 0; msFlagged = 0; msFirstClick = true; msDead = false; msWon = false;
+    msTimer = 0;
+    if (msTimerId) { clearInterval(msTimerId); msTimerId = null; }
+    document.getElementById("ms-face").textContent = "🙂";
+    document.getElementById("ms-timer").textContent = "000";
+    updateMineCounter();
+    renderMineGrid();
+  }
+  function placeMinesAvoiding(sr, sc) {
+    let placed = 0;
+    while (placed < MS_MINES) {
+      const r = Math.floor(Math.random() * MS_ROWS);
+      const c = Math.floor(Math.random() * MS_COLS);
+      if (msBoard[r][c].mine) continue;
+      if (Math.abs(r - sr) <= 1 && Math.abs(c - sc) <= 1) continue; // keep the first cell + neighbours safe
+      msBoard[r][c].mine = true;
+      placed++;
+    }
+    for (let r = 0; r < MS_ROWS; r++) for (let c = 0; c < MS_COLS; c++) {
+      if (msBoard[r][c].mine) continue;
+      let n = 0;
+      for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) {
+        const nr = r + dr, nc = c + dc;
+        if (nr < 0 || nc < 0 || nr >= MS_ROWS || nc >= MS_COLS) continue;
+        if (msBoard[nr][nc].mine) n++;
+      }
+      msBoard[r][c].n = n;
+    }
+  }
+  function updateMineCounter() {
+    const remaining = MS_MINES - msFlagged;
+    const el = document.getElementById("ms-mines");
+    if (el) el.textContent = String(Math.max(-99, Math.min(999, remaining))).padStart(3, "0");
+  }
+  function renderMineGrid() {
+    const grid = document.getElementById("ms-grid");
+    if (!grid) return;
+    grid.style.gridTemplateColumns = `repeat(${MS_COLS}, 24px)`;
+    grid.innerHTML = "";
+    for (let r = 0; r < MS_ROWS; r++) {
+      for (let c = 0; c < MS_COLS; c++) {
+        const cell = msBoard[r][c];
+        const el = document.createElement("div");
+        el.className = "ms-cell" + (cell.revealed ? " revealed" : "") + (cell.revealed && cell.mine ? " mine" : "") + (cell.flagged ? " flag" : "");
+        el.dataset.r = r; el.dataset.c = c;
+        if (cell.revealed) {
+          if (cell.mine) el.textContent = "✱";
+          else if (cell.n > 0) { el.textContent = cell.n; el.dataset.n = cell.n; }
+        } else if (cell.flagged) {
+          el.textContent = "⚑";
+        }
+        grid.appendChild(el);
+      }
+    }
+  }
+  function mineFloodReveal(r, c) {
+    if (r < 0 || c < 0 || r >= MS_ROWS || c >= MS_COLS) return;
+    const cell = msBoard[r][c];
+    if (cell.revealed || cell.flagged || cell.mine) return;
+    cell.revealed = true; msRevealed++;
+    if (cell.n === 0) {
+      for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) {
+        if (dr === 0 && dc === 0) continue;
+        mineFloodReveal(r + dr, c + dc);
+      }
+    }
+  }
+  function mineClick(r, c) {
+    if (msDead || msWon) return;
+    const cell = msBoard[r][c];
+    if (cell.flagged || cell.revealed) return;
+    if (msFirstClick) {
+      placeMinesAvoiding(r, c);
+      msFirstClick = false;
+      msTimerId = setInterval(() => {
+        msTimer = Math.min(999, msTimer + 1);
+        const el = document.getElementById("ms-timer");
+        if (el) el.textContent = String(msTimer).padStart(3, "0");
+      }, 1000);
+    }
+    if (cell.mine) {
+      cell.revealed = true;
+      msDead = true;
+      // reveal all mines
+      for (let rr = 0; rr < MS_ROWS; rr++) for (let cc = 0; cc < MS_COLS; cc++) {
+        if (msBoard[rr][cc].mine) msBoard[rr][cc].revealed = true;
+      }
+      if (msTimerId) { clearInterval(msTimerId); msTimerId = null; }
+      document.getElementById("ms-face").textContent = "😵";
+    } else if (cell.n === 0) {
+      mineFloodReveal(r, c);
+    } else {
+      cell.revealed = true; msRevealed++;
+    }
+    // Win check
+    if (!msDead && msRevealed === MS_ROWS * MS_COLS - MS_MINES) {
+      msWon = true;
+      if (msTimerId) { clearInterval(msTimerId); msTimerId = null; }
+      document.getElementById("ms-face").textContent = "😎";
+    }
+    renderMineGrid();
+  }
+  function mineFlag(r, c) {
+    if (msDead || msWon || msFirstClick) return;
+    const cell = msBoard[r][c];
+    if (cell.revealed) return;
+    cell.flagged = !cell.flagged;
+    msFlagged += cell.flagged ? 1 : -1;
+    updateMineCounter();
+    renderMineGrid();
+  }
+  document.addEventListener("click", (e) => {
+    const cell = e.target.closest(".ms-cell");
+    if (!cell || !cell.closest("#win-minesweeper")) return;
+    if (cell.classList.contains("revealed") || cell.classList.contains("flag")) return;
+    mineClick(+cell.dataset.r, +cell.dataset.c);
+  });
+  document.addEventListener("contextmenu", (e) => {
+    const cell = e.target.closest(".ms-cell");
+    if (!cell || !cell.closest("#win-minesweeper")) return;
+    e.preventDefault();
+    mineFlag(+cell.dataset.r, +cell.dataset.c);
+  });
+  document.addEventListener("click", (e) => {
+    if (e.target.closest("#ms-face")) mineReset();
+  });
+
+  // ---------- Weather widget ----------
+  // Weather-code → emoji + label mapping (Open-Meteo WMO codes)
+  const WMO = {
+    0:  ["☀︎", "Clear"],
+    1:  ["🌤︎", "Mostly clear"],
+    2:  ["⛅︎", "Partly cloudy"],
+    3:  ["☁︎", "Overcast"],
+    45: ["🌫︎", "Fog"], 48: ["🌫︎", "Rime fog"],
+    51: ["🌦︎", "Light drizzle"], 53: ["🌦︎", "Drizzle"], 55: ["🌦︎", "Heavy drizzle"],
+    61: ["🌧︎", "Light rain"], 63: ["🌧︎", "Rain"], 65: ["🌧︎", "Heavy rain"],
+    71: ["🌨︎", "Light snow"], 73: ["🌨︎", "Snow"], 75: ["🌨︎", "Heavy snow"],
+    80: ["🌧︎", "Rain showers"], 81: ["🌧︎", "Rain showers"], 82: ["🌧︎", "Violent showers"],
+    95: ["⛈︎", "Thunderstorm"], 96: ["⛈︎", "T-storm w/ hail"], 99: ["⛈︎", "T-storm w/ hail"]
+  };
+  function wmo(code) { return WMO[code] || ["·", "—"]; }
+  let weatherData = null;
+
+  async function loadWeather() {
+    // Default fallback = Patiala
+    let lat = 30.339, lon = 76.386, city = "Patiala";
+    try {
+      const geo = await fetch("https://ipapi.co/json/", { cache: "no-store" });
+      if (geo.ok) {
+        const g = await geo.json();
+        if (g.latitude && g.longitude) { lat = g.latitude; lon = g.longitude; city = g.city || city; }
+      }
+    } catch (_) {}
+    try {
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=4`;
+      const r = await fetch(url);
+      if (!r.ok) return;
+      const w = await r.json();
+      weatherData = { city, w };
+      const cur = w.current;
+      const [icon, label] = wmo(cur.weather_code);
+      const wEl = document.getElementById("weather");
+      const iEl = document.getElementById("w-icon");
+      const tEl = document.getElementById("w-txt");
+      iEl.textContent = icon;
+      tEl.innerHTML = `${Math.round(cur.temperature_2m)}° <span class="w-txt-city" style="opacity:.7">· ${city}</span>`;
+      wEl.title = `${label} · ${city}`;
+      wEl.hidden = false;
+    } catch (_) { /* leave hidden */ }
+  }
+  function toggleWeather(e) {
+    e.preventDefault(); e.stopPropagation();
+    const pop = document.getElementById("weather-pop");
+    if (!pop.hidden) { pop.hidden = true; return false; }
+    if (!weatherData) return false;
+    const { city, w } = weatherData;
+    const cur = w.current, daily = w.daily;
+    const [icon, label] = wmo(cur.weather_code);
+    document.getElementById("wp-temp").textContent = `${Math.round(cur.temperature_2m)}°`;
+    document.getElementById("wp-city").textContent = city;
+    document.getElementById("wp-cond").textContent = `${icon}  ${label}`;
+    const dow = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    let daysHtml = "";
+    for (let i = 1; i < Math.min(4, daily.time.length); i++) {
+      const d = new Date(daily.time[i]);
+      const [ic] = wmo(daily.weather_code[i]);
+      daysHtml += `<div class="wp-day"><div class="d">${dow[d.getDay()]}</div><div class="g">${ic}</div><div><span class="h">${Math.round(daily.temperature_2m_max[i])}°</span> <span class="l">${Math.round(daily.temperature_2m_min[i])}°</span></div></div>`;
+    }
+    document.getElementById("wp-days").innerHTML = daysHtml;
+    document.getElementById("wp-updated").textContent = new Date().toLocaleTimeString(undefined, {hour:'2-digit', minute:'2-digit'});
+    // position under the widget
+    const anchor = document.getElementById("weather").getBoundingClientRect();
+    pop.style.right = `${Math.max(8, window.innerWidth - anchor.right)}px`;
+    pop.style.left = "auto";
+    pop.hidden = false;
+    return false;
+  }
+  document.addEventListener("click", (e) => {
+    const pop = document.getElementById("weather-pop");
+    if (!pop.hidden && !pop.contains(e.target) && !e.target.closest("#weather")) pop.hidden = true;
+  });
+  loadWeather();
+
+  // Include Minesweeper in Spotlight results
+  SP_ITEMS.splice(5, 0, { label: "Minesweeper", kind: "Game", glyph: "💣", action: () => openWindow("minesweeper") });
+
   (function bootKickoff() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) {
@@ -1506,6 +1965,7 @@
     focusWindow(w);
     if (key === "projects" && !document.getElementById("proj-grid").children.length) renderProjects();
     if (key === "skills") runTerminal();
+    if (key === "minesweeper") mineStart();
   }
   function closeWindow(id) {
     const w = document.getElementById(id);
@@ -1637,40 +2097,115 @@
     });
   }
 
-  // Apple menu
-  function toggleAppleMenu(e) {
-    e.stopPropagation();
-    const wrap = document.getElementById("apple-wrap");
-    const existing = wrap.querySelector(".dropdown");
-    if (existing) { existing.remove(); wrap.classList.remove("open"); return; }
-    const dd = document.createElement("div");
-    dd.className = "dropdown";
-    dd.style.left = "0";
-    dd.innerHTML = `
-      <div class="item" data-act="about">About Me<span class="kb"></span></div>
+  // ---------- App menus (File / Edit / View / Window / Games / Help) ----------
+  function windowListItems() {
+    const wins = document.querySelectorAll(".window:not([hidden])");
+    if (!wins.length) return `<div class="item disabled">No open windows</div>`;
+    return [...wins].map(w => {
+      const title = w.querySelector(".titlebar .title")?.textContent || w.id;
+      return `<div class="item" data-act="focus" data-id="${w.id}">${title}</div>`;
+    }).join("");
+  }
+  const APP_MENUS = {
+    apple: () => `
+      <div class="item" data-act="open" data-arg="about">About Me</div>
       <div class="sep"></div>
-      <div class="item" data-act="projects">Projects<span class="kb">⌘P</span></div>
-      <div class="item" data-act="skills">Skills (Terminal)<span class="kb">⌘S</span></div>
-      <div class="item" data-act="resume">Resume<span class="kb">⌘R</span></div>
-      <div class="item" data-act="contact">Contact<span class="kb"></span></div>
-    `;
-    dd.addEventListener("click", (ev) => {
+      <div class="item disabled">Preferences…<span class="kb">⌘,</span></div>
+      <div class="sep"></div>
+      <div class="item" data-act="open" data-arg="contact">Contact Krish…</div>
+      <div class="item" data-act="link" data-arg="https://github.com/krish57-bit">Visit GitHub</div>`,
+    file: () => `
+      <div class="item" data-act="open" data-arg="resume">Open Resume<span class="kb">⌘R</span></div>
+      <div class="item" data-act="open" data-arg="projects">Open Projects<span class="kb">⌘P</span></div>
+      <div class="item" data-act="open" data-arg="skills">New Terminal<span class="kb">⌘S</span></div>
+      <div class="sep"></div>
+      <div class="item" data-act="copy" data-arg="krishkaul57@gmail.com">Copy Email Address</div>
+      <div class="item" data-act="copy" data-arg="https://krish57-bit.github.io/">Copy Portfolio Link</div>
+      <div class="sep"></div>
+      <div class="item" data-act="close-all">Close All Windows<span class="kb">⌘W</span></div>`,
+    edit: () => `
+      <div class="item disabled">Undo<span class="kb">⌘Z</span></div>
+      <div class="item disabled">Redo<span class="kb">⇧⌘Z</span></div>
+      <div class="sep"></div>
+      <div class="item disabled">Cut<span class="kb">⌘X</span></div>
+      <div class="item disabled">Copy<span class="kb">⌘C</span></div>
+      <div class="item disabled">Paste<span class="kb">⌘V</span></div>
+      <div class="sep"></div>
+      <div class="item" data-act="spotlight">Find…<span class="kb">⌘K</span></div>`,
+    view: () => `
+      <div class="item" data-act="open" data-arg="skills">Show Terminal</div>
+      <div class="item" data-act="open" data-arg="projects">Show Projects</div>
+      <div class="sep"></div>
+      <div class="item" data-act="spotlight">Show Spotlight<span class="kb">⌘K</span></div>
+      <div class="item" data-act="reboot">Reboot krishOS</div>`,
+    window: () => windowListItems() + `
+      <div class="sep"></div>
+      <div class="item" data-act="close-all">Close All Windows<span class="kb">⌘W</span></div>`,
+    games: () => `
+      <div class="item" data-act="open" data-arg="minesweeper">Minesweeper<span class="kb">▶</span></div>
+      <div class="item disabled">Snake · coming soon</div>
+      <div class="item disabled">2048 · coming soon</div>`,
+    help: () => `
+      <div class="item" data-act="open" data-arg="about">About This Portfolio</div>
+      <div class="item" data-act="link" data-arg="https://github.com/krish57-bit/krish57-bit.github.io">View Source</div>
+      <div class="item" data-act="link" data-arg="https://github.com/krish57-bit/krish57-bit.github.io/issues/new">Report an Issue</div>`
+  };
+  let openMenuKey = null;
+  function toggleAppMenu(e, key) {
+    e.stopPropagation();
+    const dd = document.getElementById("app-menu-dd");
+    if (openMenuKey === key) { closeAppMenu(); return; }
+    openAppMenu(key, e.currentTarget);
+  }
+  function openAppMenu(key, anchor) {
+    const dd = document.getElementById("app-menu-dd");
+    openMenuKey = key;
+    dd.innerHTML = APP_MENUS[key]();
+    dd.hidden = false;
+    // Position under the clicked menu item
+    const r = anchor.getBoundingClientRect();
+    dd.style.left = Math.max(6, r.left) + "px";
+    document.querySelectorAll("#menubar .menu").forEach(m => m.classList.toggle("open", m.dataset.appMenu === key));
+    dd.onclick = (ev) => {
       const it = ev.target.closest(".item");
       if (!it || it.classList.contains("disabled")) return;
-      openWindow(it.dataset.act);
-      dd.remove(); wrap.classList.remove("open");
-    });
-    wrap.appendChild(dd);
-    wrap.classList.add("open");
+      const act = it.dataset.act;
+      const arg = it.dataset.arg;
+      closeAppMenu();
+      if (act === "open") openWindow(arg);
+      else if (act === "close-all") document.querySelectorAll(".window:not([hidden])").forEach(w => closeWindow(w.id));
+      else if (act === "copy") {
+        try { navigator.clipboard.writeText(arg); toast?.(`Copied: ${arg}`); } catch (_) {}
+      }
+      else if (act === "spotlight") openSpotlight();
+      else if (act === "link") window.open(arg, "_blank", "noopener");
+      else if (act === "focus") { const w = document.getElementById(it.dataset.id); if (w) { w.hidden = false; focusWindow(w); } }
+      else if (act === "reboot") location.reload();
+    };
+  }
+  function closeAppMenu() {
+    const dd = document.getElementById("app-menu-dd");
+    dd.hidden = true; dd.innerHTML = "";
+    openMenuKey = null;
+    document.querySelectorAll("#menubar .menu.open").forEach(m => m.classList.remove("open"));
   }
   document.addEventListener("click", (e) => {
-    const wrap = document.getElementById("apple-wrap");
-    if (wrap && !wrap.contains(e.target)) {
-      const dd = wrap.querySelector(".dropdown");
-      if (dd) dd.remove();
-      wrap.classList.remove("open");
-    }
+    if (openMenuKey && !e.target.closest("#app-menu-dd") && !e.target.closest("#menubar .menu")) closeAppMenu();
   });
+  // Hover-switch between top menus while one is open
+  document.querySelectorAll("#menubar .menu[data-app-menu]").forEach(m => {
+    m.addEventListener("mouseenter", () => {
+      if (openMenuKey && openMenuKey !== m.dataset.appMenu) openAppMenu(m.dataset.appMenu, m);
+    });
+  });
+  // Simple toast helper (weather + copy)
+  function toast(msg) {
+    const t = document.getElementById("toast");
+    if (!t) return;
+    t.textContent = msg; t.classList.add("show");
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => t.classList.remove("show"), 2000);
+  }
 
   // Keyboard shortcuts
   document.addEventListener("keydown", (e) => {
