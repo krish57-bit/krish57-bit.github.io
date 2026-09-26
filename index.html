@@ -1927,10 +1927,10 @@
     const pop = document.getElementById("weather-pop");
     if (!pop.hidden && !pop.contains(e.target) && !e.target.closest("#weather")) pop.hidden = true;
   });
-  loadWeather();
-
-  // Include Minesweeper in Spotlight results
-  SP_ITEMS.splice(5, 0, { label: "Minesweeper", kind: "Game", glyph: "💣", action: () => openWindow("minesweeper") });
+  // NOTE: `loadWeather()` and `SP_ITEMS.splice(...)` initializations are moved
+  // to the very end of the script (after `SP_ITEMS` is actually declared)
+  // to avoid Temporal Dead Zone errors that would cascade and kill later `let`
+  // initializations (openMenuKey, zTop) required for menus to work.
 
   (function bootKickoff() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -2767,6 +2767,12 @@
     } catch (_) { /* graceful: leave hidden */ }
   }
   loadGhActivity();
+
+  // ---- Final initialization (runs after every let/const in the script has been declared) ----
+  // Kick off weather now that all supporting DOM + selectors are defined.
+  loadWeather();
+  // Register Minesweeper in Spotlight results (SP_ITEMS is a const declared above; safe to mutate).
+  SP_ITEMS.splice(5, 0, { label: "Minesweeper", kind: "Game", glyph: "💣", action: () => openWindow("minesweeper") });
 
   // About opens automatically inside dismissBoot() the moment the boot ends.
 </script>
